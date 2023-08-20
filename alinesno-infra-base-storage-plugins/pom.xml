@@ -1,17 +1,30 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
-    	<groupId>com.alinesno.infra.base</groupId>
-    	<artifactId>alinesno-infra-base-storage-parent</artifactId>
+		<groupId>com.alinesno.infra.base</groupId>
+		<artifactId>alinesno-infra-base-storage-parent</artifactId>
 		<version>${revision}</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<artifactId>alinesno-infra-base-storage-plugins</artifactId>
 	<packaging>jar</packaging>
+
+	<properties>
+		<!-- 版本号 -->
+		<spring.file.storage.version>1.0.3</spring.file.storage.version>
+		<aliyun.sdk.oss.version>3.16.1</aliyun.sdk.oss.version>
+		<qiniu.java.sdk.version>7.12.1</qiniu.java.sdk.version>
+		<minio.version>8.5.2</minio.version>
+		<aws.java.sdk.s3.version>1.12.429</aws.java.sdk.s3.version>
+		<commons.net.version>3.9.0</commons.net.version>
+		<jsch.version>0.1.55</jsch.version>
+		<hutool-extra.version>5.8.21</hutool-extra.version>
+		<commons.pool2.version>2.11.1</commons.pool2.version>
+	</properties>
 
 	<dependencies>
 
@@ -25,61 +38,62 @@
 		<dependency>
 			<groupId>cn.xuyanwu</groupId>
 			<artifactId>spring-file-storage</artifactId>
-			<version>1.0.3</version>
+			<version>${spring.file.storage.version}</version>
 		</dependency>
 		<!-- 阿里云存储 -->
 		<dependency>
 			<groupId>com.aliyun.oss</groupId>
 			<artifactId>aliyun-sdk-oss</artifactId>
-			<version>3.16.1</version>
+			<version>${aliyun.sdk.oss.version}</version>
 		</dependency>
 
 		<!-- 七牛云存储 -->
 		<dependency>
 			<groupId>com.qiniu</groupId>
 			<artifactId>qiniu-java-sdk</artifactId>
-			<version>7.12.1</version>
+			<version>${qiniu.java.sdk.version}</version>
 		</dependency>
 
 		<!-- minio云存储 -->
 		<dependency>
 			<groupId>io.minio</groupId>
 			<artifactId>minio</artifactId>
-			<version>8.5.2</version>
+			<version>${minio.version}</version>
 		</dependency>
 
 		<!-- S3云存储 -->
 		<dependency>
 			<groupId>com.amazonaws</groupId>
 			<artifactId>aws-java-sdk-s3</artifactId>
-			<version>1.12.429</version>
+			<version>${aws.java.sdk.s3.version}</version>
 		</dependency>
 
 		<!-- FTP云存储 -->
 		<dependency>
 			<groupId>commons-net</groupId>
 			<artifactId>commons-net</artifactId>
-			<version>3.9.0</version>
+			<version>${commons.net.version}</version>
 		</dependency>
 
 		<!-- SFTP存储 -->
 		<dependency>
 			<groupId>com.jcraft</groupId>
 			<artifactId>jsch</artifactId>
-			<version>0.1.55</version>
+			<version>${jsch.version}</version>
 		</dependency>
 
 		<!--糊涂工具类扩展-->
 		<dependency>
 			<groupId>cn.hutool</groupId>
 			<artifactId>hutool-extra</artifactId>
-			<version>5.8.21</version>
+			<version>${hutool-extra.version}</version>
 		</dependency>
 
 		<!-- Apache 的对象池 -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-pool2</artifactId>
+			<version>${commons.pool2.version}</version>
 		</dependency>
 
 	</dependencies>
