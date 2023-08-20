@@ -25,6 +25,7 @@
         <module>alinesno-infra-base-storage-facade</module>  <!-- 接口和引用 -->
         <module>alinesno-infra-base-storage-domain</module>  <!-- 领域服务 -->
         <module>alinesno-infra-base-storage-adapter</module> <!-- 适配层 -->
+        <module>alinesno-infra-base-storage-plugins</module>  <!-- 存储上传配置和策略 -->
         <module>alinesno-infra-base-storage-api</module>  <!-- 接口服务 -->
         <module>alinesno-infra-base-storage-client</module>  <!-- 对外引用 -->
         <module>alinesno-infra-base-storage-boot</module>  <!-- 启动服务 -->
