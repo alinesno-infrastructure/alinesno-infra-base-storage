@@ -1,7 +1,5 @@
 package com.alinesno.infra.base.storage.entity;
 
-import java.util.Date;
-
 import cn.hutool.core.lang.Dict;
 import com.alinesno.infra.common.facade.mapper.entity.InfraBaseEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -18,8 +16,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
  * @author luoxiaodong
  * @version 1.0.0
  */
-@TableName("storage_file")
-public class StorageFileEntity extends InfraBaseEntity {
+@TableName("storage_file_history")
+public class StorageFileHistoryEntity extends InfraBaseEntity {
 
     /**
      * 文件扩展名
@@ -106,7 +104,7 @@ public class StorageFileEntity extends InfraBaseEntity {
     private String objectType;
 
     @TableField
-    private String attr;
+    private Dict attr;
 
     @TableField
     private Object fileAcl;
@@ -274,11 +272,11 @@ public class StorageFileEntity extends InfraBaseEntity {
         this.objectType = objectType;
     }
 
-    public String getAttr() {
+    public Dict getAttr() {
         return attr;
     }
 
-    public void setAttr(String attr) {
+    public void setAttr(Dict attr) {
         this.attr = attr;
     }
 

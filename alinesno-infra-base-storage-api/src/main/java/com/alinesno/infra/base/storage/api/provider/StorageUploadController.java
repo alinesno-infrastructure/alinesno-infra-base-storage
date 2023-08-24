@@ -1,9 +1,12 @@
 package com.alinesno.infra.base.storage.api.provider;
 
+import com.alinesno.infra.base.storage.api.aspect.Intercepted;
 import com.alinesno.infra.base.storage.plugins.IParentFileStorageService;
 import com.alinesno.infra.common.facade.response.AjaxResult;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,7 +16,9 @@ import org.springframework.web.multipart.MultipartFile;
  * @author luoxiaodong
  * @version 1.0.0
  */
+@Scope
 @RestController
+@RequestMapping("/v1/api/base/storage")
 public class StorageUploadController {
 
     @Autowired
@@ -49,9 +54,10 @@ public class StorageUploadController {
      * @param file MultipartFile 文件
      * @return AjaxResult 包含上传结果
      */
+    @Intercepted
     @PostMapping("/upload")
-    public AjaxResult upload(MultipartFile file) {
-        return fileStorageService.upload(file);
+    public AjaxResult upload(MultipartFile file , String platform) {
+        return fileStorageService.upload(file , platform);
     }
 
     /**
@@ -60,9 +66,10 @@ public class StorageUploadController {
      * @param file MultipartFile 文件
      * @return AjaxResult 包含上传结果和文件URL
      */
-    @PostMapping("/upload2")
-    public AjaxResult uploadCallbackUrl(MultipartFile file) {
-        return fileStorageService.uploadCallbackUrl(file);
+    @Intercepted
+    @PostMapping("/upload-callback-url")
+    public AjaxResult uploadCallbackUrl(MultipartFile file , String platform) {
+        return fileStorageService.uploadCallbackUrl(file , platform);
     }
 
     /**
@@ -72,9 +79,10 @@ public class StorageUploadController {
      * @param file MultipartFile 图片文件
      * @return AjaxResult 包含上传结果和文件信息
      */
+    @Intercepted
     @PostMapping("/upload-image")
-    public AjaxResult uploadImage(MultipartFile file) {
-        return fileStorageService.uploadImage(file);
+    public AjaxResult uploadImage(MultipartFile file , String platform) {
+        return fileStorageService.uploadImage(file , platform);
     }
 
     /**
@@ -83,8 +91,9 @@ public class StorageUploadController {
      * @param file MultipartFile 文件
      * @return AjaxResult 包含上传结果和文件信息
      */
+    @Intercepted
     @PostMapping("/upload-platform")
-    public AjaxResult uploadPlatform(MultipartFile file) {
-        return fileStorageService.uploadPlatform(file);
+    public AjaxResult uploadPlatform(MultipartFile file , String platform) {
+        return fileStorageService.uploadPlatform(file , platform);
     }
 }

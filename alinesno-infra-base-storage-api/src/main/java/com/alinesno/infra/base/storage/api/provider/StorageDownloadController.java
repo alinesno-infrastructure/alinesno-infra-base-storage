@@ -1,18 +1,21 @@
 package com.alinesno.infra.base.storage.api.provider;
 
+import com.alinesno.infra.base.storage.api.aspect.Intercepted;
 import com.alinesno.infra.base.storage.api.dto.InfraFileInfo;
 import com.alinesno.infra.base.storage.plugins.IParentFileStorageService;
 import com.alinesno.infra.common.facade.response.AjaxResult;
-import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 存储下载控制器
@@ -20,6 +23,9 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @author luoxiaodong
  * @version 1.0.0
  */
+@Scope
+@RestController
+@RequestMapping("/v1/api/base/storage")
 public class StorageDownloadController {
 
     private static final Logger log = LoggerFactory.getLogger(StorageDownloadController.class);
@@ -45,6 +51,7 @@ public class StorageDownloadController {
      * @param storageId 存储ID
      * @return ResponseEntity 包含文件内容的响应实体
      */
+    @Intercepted
     @GetMapping("/download")
     public ResponseEntity<byte[]> download(@RequestParam(name = "storageId") Long storageId) {
         InfraFileInfo fileInfo = fileStorageService.getFileInfo(storageId);

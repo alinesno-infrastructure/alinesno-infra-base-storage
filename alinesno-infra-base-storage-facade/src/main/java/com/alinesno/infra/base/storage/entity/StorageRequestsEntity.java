@@ -18,8 +18,6 @@ import com.baomidou.mybatisplus.annotation.TableName;
 @TableName("storage_requests")
 public class StorageRequestsEntity extends InfraBaseEntity {
 
-    private static final long serialVersionUID = 1L;
-
     /**
      * 请求路径
      */

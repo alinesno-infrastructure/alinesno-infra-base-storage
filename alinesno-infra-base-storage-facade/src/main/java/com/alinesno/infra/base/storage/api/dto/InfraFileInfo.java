@@ -2,11 +2,13 @@ package com.alinesno.infra.base.storage.api.dto;
 
 import cn.hutool.core.lang.Dict;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 重写了spring-file-storage的FileInfo，添加自定义和避免强依赖的问题
+ *
+ * @author luoxiaodong
+ * @version 1.0.0
  */
 public class InfraFileInfo {
 
