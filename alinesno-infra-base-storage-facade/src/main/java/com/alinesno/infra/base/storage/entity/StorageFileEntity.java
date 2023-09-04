@@ -69,50 +69,96 @@ public class StorageFileEntity extends InfraBaseEntity {
     @TableField("api_key")
     private String apiKey;
 
-    @TableField
+    /**
+     * 原始文件名
+     */
+    @TableField("originalFilename")
     private String originalFilename;
 
-    @TableField
+    /**
+     * 基础路径
+     */
+    @TableField("basePath")
     private String basePath;
 
-    @TableField
+    /**
+     * 路径
+     */
+    @TableField("path")
     private String path;
 
-    @TableField
+    /**
+     * 扩展名
+     */
+    @TableField("ext")
     private String ext;
 
-    @TableField
+    /**
+     * 内容类型
+     */
+    @TableField("contentType")
     private String contentType;
 
-    @TableField
+    /**
+     * 平台
+     */
+    @TableField("platform")
     private String platform;
 
-    @TableField
+    /**
+     * 缩略图URL
+     */
+    @TableField("thUrl")
     private String thUrl;
 
-    @TableField
+    /**
+     * 缩略图文件名
+     */
+    @TableField("thFilename")
     private String thFilename;
 
-    @TableField
+    /**
+     * 缩略图大小
+     */
+    @TableField("thSize")
     private Long thSize;
 
-    @TableField
+    /**
+     * 缩略图内容类型
+     */
+    @TableField("thContentType")
     private String thContentType;
 
-    @TableField
+    /**
+     * 对象ID
+     */
+    @TableField("objectId")
     private String objectId;
 
-    @TableField
+    /**
+     * 对象类型
+     */
+    @TableField("objectType")
     private String objectType;
 
-    @TableField
+    /**
+     * 属性
+     */
+    @TableField("attr")
     private String attr;
 
-    @TableField
+    /**
+     * 文件ACL
+     */
+    @TableField("fileAcl")
     private Object fileAcl;
 
-    @TableField
+    /**
+     * 缩略图文件ACL
+     */
+    @TableField("thFileAcl")
     private Object thFileAcl;
+
 
     public String getFileExt() {
         return fileExt;

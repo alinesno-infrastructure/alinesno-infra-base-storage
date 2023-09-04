@@ -67,50 +67,96 @@ public class StorageFileHistoryEntity extends InfraBaseEntity {
     @TableField("api_key")
     private String apiKey;
 
-    @TableField
+    /**
+     * 原始文件名
+     */
+    @TableField(value = "originalFilename")
     private String originalFilename;
 
-    @TableField
+    /**
+     * 基础路径
+     */
+    @TableField(value = "basePath")
     private String basePath;
 
-    @TableField
+    /**
+     * 路径
+     */
+    @TableField(value = "path")
     private String path;
 
-    @TableField
+    /**
+     * 文件扩展名
+     */
+    @TableField(value = "ext")
     private String ext;
 
-    @TableField
+    /**
+     * 内容类型
+     */
+    @TableField(value = "contentType")
     private String contentType;
 
-    @TableField
+    /**
+     * 平台
+     */
+    @TableField(value = "platform")
     private String platform;
 
-    @TableField
+    /**
+     * 缩略图URL
+     */
+    @TableField(value = "thUrl")
     private String thUrl;
 
-    @TableField
+    /**
+     * 缩略图文件名
+     */
+    @TableField(value = "thFilename")
     private String thFilename;
 
-    @TableField
+    /**
+     * 缩略图大小
+     */
+    @TableField(value = "thSize")
     private Long thSize;
 
-    @TableField
+    /**
+     * 缩略图内容类型
+     */
+    @TableField(value = "thContentType")
     private String thContentType;
 
-    @TableField
+    /**
+     * 对象ID
+     */
+    @TableField(value = "objectId")
     private String objectId;
 
-    @TableField
+    /**
+     * 对象类型
+     */
+    @TableField(value = "objectType")
     private String objectType;
 
-    @TableField
+    /**
+     * 属性
+     */
+    @TableField(value = "attr")
     private Dict attr;
 
-    @TableField
+    /**
+     * 文件ACL
+     */
+    @TableField(value = "fileAcl")
     private Object fileAcl;
 
-    @TableField
+    /**
+     * 缩略图文件ACL
+     */
+    @TableField(value = "thFileAcl")
     private Object thFileAcl;
+
 
     public String getFileExt() {
         return fileExt;
