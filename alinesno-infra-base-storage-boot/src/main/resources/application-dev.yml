@@ -18,3 +18,27 @@ spring:
   devtools:
     restart:
       enabled: true
+  #文件存储配置(本地、oss)
+  file-storage:
+    default-platform: local
+    thumbnail-suffix: ".min.jpg" #缩略图后缀
+    local:
+      - platform: local # 存储平台标识
+        enable-storage: true #是否开启本存储（只能选一种）
+        enable-access: true #启用访问（线上请使用 Nginx 配置，效率更高）
+        domain: "http://127.0.0.1:2222" #访问域名，注意后面要和path-patterns保持一致，“/”结尾
+        base-path: D:\\project # 存储地址
+        path-patterns: /** #访问路径
+
+# sa-token配置
+sa-token:
+  token-name: satoken
+  host-path: http://alinesno-infra-base-identity-auth-application.beta.base.infra.linesno.com
+  sso:
+    auth-url: ${sa-token.host-path}/login
+    is-http: true
+    check-ticket-url: ${sa-token.host-path}/sso/checkTicket
+    slo-url: ${sa-token.host-path}/sso/signout
+    get-data-url: ${sa-token.host-path}/sso/getData
+  sign:
+    secret-key:
