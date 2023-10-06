@@ -5,6 +5,7 @@ _book
 .springBeans
 target
 bin
+build
 classpath-data.json
 sts-cache
 
