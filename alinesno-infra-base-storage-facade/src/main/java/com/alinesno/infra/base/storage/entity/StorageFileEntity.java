@@ -1,5 +1,8 @@
 package com.alinesno.infra.base.storage.entity;
 
+import com.gitee.sunchenbin.mybatis.actable.annotation.ColumnComment;
+import com.gitee.sunchenbin.mybatis.actable.annotation.ColumnType;
+import lombok.Data;
 import java.util.Date;
 
 import cn.hutool.core.lang.Dict;
@@ -19,328 +22,190 @@ import com.baomidou.mybatisplus.annotation.TableName;
  * @version 1.0.0
  */
 @TableName("storage_file")
+@Data
 public class StorageFileEntity extends InfraBaseEntity {
 
     /**
      * 文件扩展名
      */
     @TableField("file_ext")
+	@ColumnType(length=4)
+	@ColumnComment("文件扩展名")
     private String fileExt;
 
     /**
      * 文件标识
      */
     @TableField("file_flag")
+	@ColumnType(length=1)
+	@ColumnComment("文件标识")
     private String fileFlag;
 
     /**
      * 文件名称
      */
     @TableField("file_name")
+	@ColumnType(length=255)
+	@ColumnComment("文件名称")
     private String fileName;
 
     /**
      * 文件长度
      */
     @TableField("file_size")
+	@ColumnType(length=4)
+	@ColumnComment("文件长度")
     private long fileSize;
 
     /**
      * 地址链接
      */
     @TableField("file_url")
+	@ColumnType(length=255)
+	@ColumnComment("地址链接")
     private String fileUrl;
 
     /**
      * 是否公开
      */
     @TableField("is_public")
+	@ColumnType(length=1)
+	@ColumnComment("是否公开")
     private String isPublic;
 
     /**
      * 保存类型
      */
     @TableField("save_type")
+	@ColumnType(length=1)
+	@ColumnComment("保存类型")
     private String saveType;
 
     /**
      * 接口密钥
      */
     @TableField("api_key")
+	@ColumnType(length=255)
+	@ColumnComment("接口密钥")
     private String apiKey;
 
     /**
      * 原始文件名
      */
     @TableField("originalFilename")
+	@ColumnType(length=255)
+	@ColumnComment("原始文件名")
     private String originalFilename;
 
     /**
      * 基础路径
      */
     @TableField("basePath")
+	@ColumnType(length=255)
+	@ColumnComment("基础路径")
     private String basePath;
 
     /**
      * 路径
      */
     @TableField("path")
+	@ColumnType(length=255)
+	@ColumnComment("路径")
     private String path;
 
     /**
      * 扩展名
      */
     @TableField("ext")
+	@ColumnType(length=255)
+	@ColumnComment("扩展名")
     private String ext;
 
     /**
      * 内容类型
      */
     @TableField("contentType")
+	@ColumnType(length=255)
+	@ColumnComment("内容类型")
     private String contentType;
 
     /**
      * 平台
      */
     @TableField("platform")
+	@ColumnType(length=255)
+	@ColumnComment("平台")
     private String platform;
 
     /**
      * 缩略图URL
      */
     @TableField("thUrl")
+	@ColumnType(length=255)
+	@ColumnComment("缩略图URL")
     private String thUrl;
 
     /**
      * 缩略图文件名
      */
     @TableField("thFilename")
+	@ColumnType(length=255)
+	@ColumnComment("缩略图文件名")
     private String thFilename;
 
     /**
      * 缩略图大小
      */
     @TableField("thSize")
+	@ColumnType(length=255)
+	@ColumnComment("缩略图大小")
     private Long thSize;
 
     /**
      * 缩略图内容类型
      */
     @TableField("thContentType")
+	@ColumnType(length=50)
+	@ColumnComment("缩略图内容类型")
     private String thContentType;
 
     /**
      * 对象ID
      */
     @TableField("objectId")
+	@ColumnType(length=24)
+	@ColumnComment("对象ID")
     private String objectId;
 
     /**
      * 对象类型
      */
     @TableField("objectType")
+	@ColumnType(length=50)
+	@ColumnComment("对象类型")
     private String objectType;
 
     /**
      * 属性
      */
     @TableField("attr")
+	@ColumnType(length=255)
+	@ColumnComment("属性")
     private String attr;
 
     /**
      * 文件ACL
      */
     @TableField("fileAcl")
+	@ColumnType(length=20)
+	@ColumnComment("文件ACL")
     private Object fileAcl;
 
     /**
      * 缩略图文件ACL
      */
     @TableField("thFileAcl")
+	@ColumnType(length=255)
+	@ColumnComment("缩略图文件ACL")
     private Object thFileAcl;
-
-
-    public String getFileExt() {
-        return fileExt;
-    }
-
-    public void setFileExt(String fileExt) {
-        this.fileExt = fileExt;
-    }
-
-    public String getFileFlag() {
-        return fileFlag;
-    }
-
-    public void setFileFlag(String fileFlag) {
-        this.fileFlag = fileFlag;
-    }
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    public long getFileSize() {
-        return fileSize;
-    }
-
-    public void setFileSize(long fileSize) {
-        this.fileSize = fileSize;
-    }
-
-    public String getFileUrl() {
-        return fileUrl;
-    }
-
-    public void setFileUrl(String fileUrl) {
-        this.fileUrl = fileUrl;
-    }
-
-    public String getIsPublic() {
-        return isPublic;
-    }
-
-    public void setIsPublic(String isPublic) {
-        this.isPublic = isPublic;
-    }
-
-    public String getSaveType() {
-        return saveType;
-    }
-
-    public void setSaveType(String saveType) {
-        this.saveType = saveType;
-    }
-
-    public String getApiKey() {
-        return apiKey;
-    }
-
-    public void setApiKey(String apiKey) {
-        this.apiKey = apiKey;
-    }
-
-    public String getOriginalFilename() {
-        return originalFilename;
-    }
-
-    public void setOriginalFilename(String originalFilename) {
-        this.originalFilename = originalFilename;
-    }
-
-    public String getBasePath() {
-        return basePath;
-    }
-
-    public void setBasePath(String basePath) {
-        this.basePath = basePath;
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
-
-    public String getExt() {
-        return ext;
-    }
-
-    public void setExt(String ext) {
-        this.ext = ext;
-    }
-
-    public String getContentType() {
-        return contentType;
-    }
-
-    public void setContentType(String contentType) {
-        this.contentType = contentType;
-    }
-
-    public String getPlatform() {
-        return platform;
-    }
-
-    public void setPlatform(String platform) {
-        this.platform = platform;
-    }
-
-    public String getThUrl() {
-        return thUrl;
-    }
-
-    public void setThUrl(String thUrl) {
-        this.thUrl = thUrl;
-    }
-
-    public String getThFilename() {
-        return thFilename;
-    }
-
-    public void setThFilename(String thFilename) {
-        this.thFilename = thFilename;
-    }
-
-    public Long getThSize() {
-        return thSize;
-    }
-
-    public void setThSize(Long thSize) {
-        this.thSize = thSize;
-    }
-
-    public String getThContentType() {
-        return thContentType;
-    }
-
-    public void setThContentType(String thContentType) {
-        this.thContentType = thContentType;
-    }
-
-    public String getObjectId() {
-        return objectId;
-    }
-
-    public void setObjectId(String objectId) {
-        this.objectId = objectId;
-    }
-
-    public String getObjectType() {
-        return objectType;
-    }
-
-    public void setObjectType(String objectType) {
-        this.objectType = objectType;
-    }
-
-    public String getAttr() {
-        return attr;
-    }
-
-    public void setAttr(String attr) {
-        this.attr = attr;
-    }
-
-    public Object getFileAcl() {
-        return fileAcl;
-    }
-
-    public void setFileAcl(Object fileAcl) {
-        this.fileAcl = fileAcl;
-    }
-
-    public Object getThFileAcl() {
-        return thFileAcl;
-    }
-
-    public void setThFileAcl(Object thFileAcl) {
-        this.thFileAcl = thFileAcl;
-    }
 }
