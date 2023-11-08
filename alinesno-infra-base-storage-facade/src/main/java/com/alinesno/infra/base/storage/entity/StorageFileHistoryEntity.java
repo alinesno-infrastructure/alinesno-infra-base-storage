@@ -189,7 +189,7 @@ public class StorageFileHistoryEntity extends InfraBaseEntity {
     @TableField(value = "attr")
 	@ColumnType(length=255)
 	@ColumnComment("属性")
-    private Dict attr;
+    private String attr;
 
     /**
      * 文件ACL
@@ -197,7 +197,7 @@ public class StorageFileHistoryEntity extends InfraBaseEntity {
     @TableField(value = "fileAcl")
 	@ColumnType(length=50)
 	@ColumnComment("文件ACL")
-    private Object fileAcl;
+    private String fileAcl;
 
     /**
      * 缩略图文件ACL
@@ -205,5 +205,5 @@ public class StorageFileHistoryEntity extends InfraBaseEntity {
     @TableField(value = "thFileAcl")
 	@ColumnType(length=255)
 	@ColumnComment("缩略图文件ACL")
-    private Object thFileAcl;
+    private String thFileAcl;
 }

@@ -29,6 +29,18 @@ spring:
         domain: "http://127.0.0.1:2222" #访问域名，注意后面要和path-patterns保持一致，“/”结尾
         base-path: D:\\project # 存储地址
         path-patterns: /** #访问路径
+        
+actable:
+  table:
+    auto: update
+  model:
+    pack: com.alinesno.infra.base.storage.entity;
+  database:
+    type: mysql
+  index:
+    prefix: alinesno_base_storage_idx_
+  unique:
+    prefix: alinesno_base_storage_uni_
 
 # sa-token配置
 sa-token:

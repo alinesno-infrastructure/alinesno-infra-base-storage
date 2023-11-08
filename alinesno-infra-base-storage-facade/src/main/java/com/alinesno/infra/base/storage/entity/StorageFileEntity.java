@@ -3,9 +3,6 @@ package com.alinesno.infra.base.storage.entity;
 import com.gitee.sunchenbin.mybatis.actable.annotation.ColumnComment;
 import com.gitee.sunchenbin.mybatis.actable.annotation.ColumnType;
 import lombok.Data;
-import java.util.Date;
-
-import cn.hutool.core.lang.Dict;
 import com.alinesno.infra.common.facade.mapper.entity.InfraBaseEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -199,7 +196,7 @@ public class StorageFileEntity extends InfraBaseEntity {
     @TableField("fileAcl")
 	@ColumnType(length=20)
 	@ColumnComment("文件ACL")
-    private Object fileAcl;
+    private String fileAcl;
 
     /**
      * 缩略图文件ACL
@@ -207,5 +204,5 @@ public class StorageFileEntity extends InfraBaseEntity {
     @TableField("thFileAcl")
 	@ColumnType(length=255)
 	@ColumnComment("缩略图文件ACL")
-    private Object thFileAcl;
+    private String thFileAcl;
 }
