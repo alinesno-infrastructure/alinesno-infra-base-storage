@@ -84,12 +84,11 @@ import * as echarts from "echarts";
 const echart = echarts;
 
 const opertionAssets = ref([
-  {id:'1' , title:'运维脚本' , count:45} ,
-  {id:'2' , title:'服务资源' , count:145} ,
-  {id:'3' , title:'持续集成' , count:65} ,
-  {id:'4' , title:'自动配置' , count:85} ,
-  {id:'5' , title:'配置管理' , count:45} ,
-  {id:'6' , title:'安全监控' , count:45} ,
+  {id:'1' , title:'应用管理' , count:45} ,
+  {id:'2' , title:'当前渠道' , count:145} ,
+  {id:'3' , title:'数据存储量' , count:65} ,
+  {id:'4' , title:'文件类型' , count:85} ,
+  {id:'5' , title:'接口请求次数' , count:45} ,
 ])
 
 const resources = ref([
