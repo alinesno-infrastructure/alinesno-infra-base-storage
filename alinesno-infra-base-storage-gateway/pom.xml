@@ -10,7 +10,7 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<artifactId>alinesno-infra-base-storage-api</artifactId>
+	<artifactId>alinesno-infra-base-storage-gateway</artifactId>
 	<packaging>jar</packaging>
 
 	<dependencies>
@@ -26,12 +26,6 @@
 			<groupId>com.alinesno.infra.common</groupId>
 			<artifactId>alinesno-infra-common-web-api</artifactId>
 			<version>${revision}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>cn.xuyanwu</groupId>
-			<artifactId>spring-file-storage</artifactId>
-			<version>1.0.3</version>
 		</dependency>
 
 	</dependencies>

@@ -1,14 +1,21 @@
 package com.alinesno.infra.base.storage.plugins;
 
-import cn.xuyanwu.spring.file.storage.FileInfo;
-import cn.xuyanwu.spring.file.storage.FileStorageService;
-import cn.xuyanwu.spring.file.storage.platform.FileStorage;
-import com.alinesno.infra.base.storage.api.dto.InfraFileInfo;
+import cn.hutool.core.bean.BeanUtil;
+import com.alinesno.infra.base.storage.api.dto.InfraFileInfoDto;
+import com.alinesno.infra.base.storage.plugins.entity.FileDetailEntity;
+import com.alinesno.infra.base.storage.plugins.service.FileDetailService;
 import com.alinesno.infra.common.facade.response.AjaxResult;
-import org.apache.commons.lang.StringUtils;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.dromara.x.file.storage.core.FileInfo;
+import org.dromara.x.file.storage.core.FileStorageService;
+import org.dromara.x.file.storage.core.ProgressListener;
+import org.dromara.x.file.storage.core.platform.FileStorage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,6 +35,9 @@ public class ParentFileStorageServiceImpl implements IParentFileStorageService {
     @Autowired
     private FileStorageService fileStorageService;//注入实列
 
+   @Autowired
+    private FileDetailService fileDetailService ;
+
     @Override
     public AjaxResult upload(MultipartFile file, String platform) {
 
@@ -38,7 +48,7 @@ public class ParentFileStorageServiceImpl implements IParentFileStorageService {
                 .setPlatform(platform)    //使用指定的存储平台
                 .upload() ;
 
-        return AjaxResult.success(info.getId());
+        return AjaxResult.success("操作成功." , info.getId());
     }
 
     @Override
@@ -103,17 +113,62 @@ public class ParentFileStorageServiceImpl implements IParentFileStorageService {
     }
 
     @Override
-    public byte[] download(Long storageId) {
-        return new byte[0];
+    public byte[] download(String storageId) {
+
+        FileInfo fileInfo = getById(storageId) ;
+
+        return fileStorageService.download(fileInfo).setProgressMonitor(new ProgressListener() {
+            @Override
+            public void start() {
+                System.out.println("下载开始");
+            }
+
+            @Override
+            public void progress(long progressSize,long allSize) {
+                System.out.println("已下载 " + progressSize + " 总大小" + allSize);
+            }
+
+            @Override
+            public void finish() {
+                System.out.println("下载结束");
+            }
+        }).bytes() ;
+
     }
 
     @Override
-    public InfraFileInfo getFileInfo(Long storageId) {
-        return null;
+    public InfraFileInfoDto getFileInfo(String storageId) {
+
+        InfraFileInfoDto infoDto = new InfraFileInfoDto() ;
+        FileInfo fileInfo = getById(storageId) ;
+
+        BeanUtils.copyProperties(fileInfo, infoDto);
+
+        return infoDto ;
     }
 
     @Override
-    public String presignedUrl(Long storageId) {
+    public String presignedUrl(String storageId) {
         return null;
+    }
+
+    public FileInfo getById(String id) {
+        FileDetailEntity detail = fileDetailService.getOne(new LambdaQueryWrapper<FileDetailEntity>().eq(FileDetailEntity::getId,id));
+        FileInfo info = BeanUtil.copyProperties(detail,FileInfo.class,"metadata","userMetadata","thMetadata","thUserMetadata","attr");
+
+        try {
+            //这是手动获取数据库中的 json 字符串 并转成 元数据，方便使用
+            info.setMetadata(fileDetailService.jsonToMetadata(detail.getMetadata()));
+            info.setUserMetadata(fileDetailService.jsonToMetadata(detail.getUserMetadata()));
+            info.setThMetadata(fileDetailService.jsonToMetadata(detail.getThMetadata()));
+            info.setThUserMetadata(fileDetailService.jsonToMetadata(detail.getThUserMetadata()));
+
+            //这是手动获取数据库中的 json 字符串 并转成 附加属性字典，方便使用
+            info.setAttr(fileDetailService.jsonToDict(detail.getAttr()));
+        }catch (Exception e){
+            log.error("转换json异常:{}" , e.getMessage());
+        }
+
+        return info;
     }
 }

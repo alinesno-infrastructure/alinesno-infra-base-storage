@@ -1,6 +1,6 @@
 package com.alinesno.infra.base.storage.plugins;
 
-import com.alinesno.infra.base.storage.api.dto.InfraFileInfo;
+import com.alinesno.infra.base.storage.api.dto.InfraFileInfoDto;
 import com.alinesno.infra.common.facade.response.AjaxResult;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -67,7 +67,7 @@ public interface IParentFileStorageService {
      * @param storageId 存储ID
      * @return 文件的字节数组
      */
-    byte[] download(Long storageId);
+    byte[] download(String storageId);
 
     /**
      * 获取存储ID对应的文件信息
@@ -75,7 +75,7 @@ public interface IParentFileStorageService {
      * @param storageId 存储ID
      * @return 文件信息对象
      */
-    InfraFileInfo getFileInfo(Long storageId);
+    InfraFileInfoDto getFileInfo(String storageId);
 
     /**
      * 获取存储ID对应文件的预签名URL
@@ -83,5 +83,5 @@ public interface IParentFileStorageService {
      * @param storageId 存储ID
      * @return 预签名URL
      */
-    String presignedUrl(Long storageId);
+    String presignedUrl(String storageId);
 }

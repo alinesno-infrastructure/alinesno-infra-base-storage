@@ -1,7 +1,7 @@
 package com.alinesno.infra.base.storage.api.provider;
 
 import com.alinesno.infra.base.storage.api.aspect.Intercepted;
-import com.alinesno.infra.base.storage.api.dto.InfraFileInfo;
+import com.alinesno.infra.base.storage.api.dto.InfraFileInfoDto;
 import com.alinesno.infra.base.storage.plugins.IParentFileStorageService;
 import com.alinesno.infra.common.facade.response.AjaxResult;
 import org.slf4j.Logger;
@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Scope
 @RestController
-@RequestMapping("/v1/api/base/storage")
+@RequestMapping("/api/base/storage")
 public class StorageDownloadController {
 
     private static final Logger log = LoggerFactory.getLogger(StorageDownloadController.class);
@@ -40,9 +40,9 @@ public class StorageDownloadController {
      * @return AjaxResult 包含预签名 URL
      */
     @GetMapping("/presignedUrl")
-    public AjaxResult presignedUrl(@RequestParam(name = "storageId") Long storageId) {
+    public AjaxResult presignedUrl(@RequestParam(name = "storageId") String storageId) {
         String presignedUrl = fileStorageService.presignedUrl(storageId);
-        return AjaxResult.success(presignedUrl);
+        return AjaxResult.success("获取预告签名文件" , presignedUrl);
     }
 
     /**
@@ -53,8 +53,9 @@ public class StorageDownloadController {
      */
     @Intercepted
     @GetMapping("/download")
-    public ResponseEntity<byte[]> download(@RequestParam(name = "storageId") Long storageId) {
-        InfraFileInfo fileInfo = fileStorageService.getFileInfo(storageId);
+    public ResponseEntity<byte[]> download(@RequestParam(name = "storageId") String storageId) {
+
+        InfraFileInfoDto fileInfo = fileStorageService.getFileInfo(storageId);
         byte[] byteBody = fileStorageService.download(storageId);
 
         HttpHeaders headers = new HttpHeaders();

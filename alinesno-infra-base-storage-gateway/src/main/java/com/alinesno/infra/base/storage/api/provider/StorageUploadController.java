@@ -18,7 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
  */
 @Scope
 @RestController
-@RequestMapping("/v1/api/base/storage")
+@RequestMapping("/api/base/storage")
 public class StorageUploadController {
 
     @Autowired
@@ -67,7 +67,7 @@ public class StorageUploadController {
      * @return AjaxResult 包含上传结果和文件URL
      */
     @Intercepted
-    @PostMapping("/upload-callback-url")
+    @PostMapping("/uploadCallbackUrl")
     public AjaxResult uploadCallbackUrl(MultipartFile file , String platform) {
         return fileStorageService.uploadCallbackUrl(file , platform);
     }
@@ -80,7 +80,7 @@ public class StorageUploadController {
      * @return AjaxResult 包含上传结果和文件信息
      */
     @Intercepted
-    @PostMapping("/upload-image")
+    @PostMapping("/uploadImage")
     public AjaxResult uploadImage(MultipartFile file , String platform) {
         return fileStorageService.uploadImage(file , platform);
     }
@@ -92,7 +92,7 @@ public class StorageUploadController {
      * @return AjaxResult 包含上传结果和文件信息
      */
     @Intercepted
-    @PostMapping("/upload-platform")
+    @PostMapping("/uploadPlatform")
     public AjaxResult uploadPlatform(MultipartFile file , String platform) {
         return fileStorageService.uploadPlatform(file , platform);
     }

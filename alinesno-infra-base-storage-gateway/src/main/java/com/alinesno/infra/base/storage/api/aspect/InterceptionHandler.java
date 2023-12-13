@@ -23,6 +23,7 @@ public class InterceptionHandler {
     @Autowired
     private HttpServletRequest request;
 
+    @Autowired
     private IStorageRequestsService requestsService;
 
     @Before("@annotation(com.alinesno.infra.base.storage.api.aspect.Intercepted)")

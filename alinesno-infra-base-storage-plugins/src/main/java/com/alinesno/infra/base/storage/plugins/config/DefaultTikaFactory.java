@@ -1,7 +1,7 @@
 package com.alinesno.infra.base.storage.plugins.config;
 
-import cn.xuyanwu.spring.file.storage.tika.TikaFactory;
 import org.apache.tika.Tika;
+import org.dromara.x.file.storage.core.tika.TikaFactory;
 
 /**
  * 默认的 Tika 工厂类

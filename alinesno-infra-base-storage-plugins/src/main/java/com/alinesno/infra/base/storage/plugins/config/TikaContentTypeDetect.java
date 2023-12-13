@@ -1,7 +1,8 @@
 package com.alinesno.infra.base.storage.plugins.config;
 
-import cn.xuyanwu.spring.file.storage.tika.ContentTypeDetect;
-import cn.xuyanwu.spring.file.storage.tika.TikaFactory;
+
+import org.dromara.x.file.storage.core.tika.ContentTypeDetect;
+import org.dromara.x.file.storage.core.tika.TikaFactory;
 
 import java.io.File;
 import java.io.IOException;

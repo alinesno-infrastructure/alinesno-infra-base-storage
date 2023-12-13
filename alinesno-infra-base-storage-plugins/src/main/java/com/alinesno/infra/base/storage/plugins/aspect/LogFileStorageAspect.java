@@ -1,11 +1,11 @@
 package com.alinesno.infra.base.storage.plugins.aspect;
 
 import cn.hutool.core.util.ArrayUtil;
-import cn.xuyanwu.spring.file.storage.FileInfo;
-import cn.xuyanwu.spring.file.storage.UploadPretreatment;
-import cn.xuyanwu.spring.file.storage.aspect.*;
-import cn.xuyanwu.spring.file.storage.platform.FileStorage;
-import cn.xuyanwu.spring.file.storage.recorder.FileRecorder;
+import org.dromara.x.file.storage.core.FileInfo;
+import org.dromara.x.file.storage.core.UploadPretreatment;
+import org.dromara.x.file.storage.core.aspect.*;
+import org.dromara.x.file.storage.core.platform.FileStorage;
+import org.dromara.x.file.storage.core.recorder.FileRecorder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
