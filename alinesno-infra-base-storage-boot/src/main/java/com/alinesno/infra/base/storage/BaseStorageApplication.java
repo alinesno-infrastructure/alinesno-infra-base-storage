@@ -1,5 +1,6 @@
 package com.alinesno.infra.base.storage;
 
+import org.dromara.x.file.storage.spring.SpringFileStorageProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

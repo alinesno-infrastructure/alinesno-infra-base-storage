@@ -45,6 +45,22 @@ public class ParentFileStorageServiceImpl implements IParentFileStorageService {
 
         FileInfo info = fileStorageService
                 .of(file)
+                .setProgressMonitor(new ProgressListener() {
+                    @Override
+                    public void start() {
+                        System.out.println("上传开始");
+                    }
+
+                    @Override
+                    public void progress(long progressSize,long allSize) {
+                        System.out.println("已上传 " + progressSize + " 总大小" + allSize);
+                    }
+
+                    @Override
+                    public void finish() {
+                        System.out.println("上传结束");
+                    }
+                })
                 .setPlatform(platform)    //使用指定的存储平台
                 .upload() ;
 

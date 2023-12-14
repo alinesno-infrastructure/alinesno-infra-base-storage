@@ -1,6 +1,7 @@
 package com.alinesno.infra.base.storage.plugins.entity;
 
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.gitee.sunchenbin.mybatis.actable.annotation.Column;
 import com.gitee.sunchenbin.mybatis.actable.constants.MySqlTypeConstant;
@@ -12,7 +13,7 @@ import java.util.Date;
 @TableName("file_detail")
 public class FileDetailEntity {
 
-    @TableField("id")
+    @TableId("id")
     @Column(name = "id", type = MySqlTypeConstant.VARCHAR, length = 32, isKey = true, comment = "文件id")
     private String id;
 
