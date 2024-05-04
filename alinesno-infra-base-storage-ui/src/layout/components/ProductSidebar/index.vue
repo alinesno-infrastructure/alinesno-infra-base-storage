@@ -22,8 +22,8 @@ const router = useRouter();
 
 // 菜单列表
 const menuItems = ref([
-  {id:'2' , icon:'fa-brands fa-slack' , link:'/base/storage/application/index' , desc:'应用管理'},
-  {id:'3' , icon:'fa-solid fa-list-check' , link:'/base/storage/files/index' , desc:'存储管理'},
+  {id:'2' , icon:'fa-brands fa-slack' , link:'/base/storage/project/index' , desc:'项目管理'},
+  {id:'3' , icon:'fa-solid fa-list-check' , link:'/base/storage/storage/index' , desc:'存储管理'},
   {id:'5' , icon:'fa-solid fa-file-word' , link:'/base/storage/token/index' , desc:'存储密钥'}, 
   {id:'6' , icon:'fa-solid fa-bomb' , link:'/base/storage/recycle/index' , desc:'回收站'},
   {id:'7' , icon:'fa-solid fa-at' , link:'/base/storage/backup/index' , desc:'数据备份'},

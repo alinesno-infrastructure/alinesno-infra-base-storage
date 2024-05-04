@@ -74,16 +74,16 @@ export const constantRoutes = [
 
       // >>>>>>>>>>>>>> storage_router_start >>>>>>>>>>>>>>>>>>>>>
       {
-        path: '/base/storage/files/index',
-        component: () => import('@/views/base/storage/files/index'),
-        name: '/base/storage/files/index',
+        path: '/base/storage/storage/index',
+        component: () => import('@/views/base/storage/storage/index'),
+        name: '/base/storage/storage/index',
         meta: { title: '存储管理', icon: 'dashboard', affix: true }
       }, 
       {
-        path: '/base/storage/application/index',
-        component: () => import('@/views/base/storage/application/index'),
-        name: '/base/storage/application/index',
-        meta: { title: '应用管理', icon: 'dashboard', affix: true }
+        path: '/base/storage/project/index',
+        component: () => import('@/views/base/storage/project/index'),
+        name: '/base/storage/project/index',
+        meta: { title: '项目管理', icon: 'dashboard', affix: true }
       }, 
       {
         path: '/base/storage/token/index',
