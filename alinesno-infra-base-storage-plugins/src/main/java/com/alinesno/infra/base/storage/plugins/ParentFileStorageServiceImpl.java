@@ -2,11 +2,11 @@ package com.alinesno.infra.base.storage.plugins;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.alinesno.infra.base.storage.api.dto.InfraFileInfoDto;
-import com.alinesno.infra.base.storage.plugins.entity.FileDetailEntity;
+import com.alinesno.infra.base.storage.entity.StorageFileEntity;
 import com.alinesno.infra.base.storage.plugins.service.FileDetailService;
+import com.alinesno.infra.base.storage.service.IStorageFileService;
 import com.alinesno.infra.common.facade.response.AjaxResult;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.dromara.x.file.storage.core.FileInfo;
 import org.dromara.x.file.storage.core.FileStorageService;
 import org.dromara.x.file.storage.core.ProgressListener;
@@ -15,7 +15,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,6 +33,9 @@ public class ParentFileStorageServiceImpl implements IParentFileStorageService {
 
     @Autowired
     private FileStorageService fileStorageService;//注入实列
+
+    @Autowired
+    private IStorageFileService fileService ;
 
    @Autowired
     private FileDetailService fileDetailService ;
@@ -169,7 +171,7 @@ public class ParentFileStorageServiceImpl implements IParentFileStorageService {
     }
 
     public FileInfo getById(String id) {
-        FileDetailEntity detail = fileDetailService.getOne(new LambdaQueryWrapper<FileDetailEntity>().eq(FileDetailEntity::getId,id));
+        StorageFileEntity detail = fileService.getOne(new LambdaQueryWrapper<StorageFileEntity>().eq(StorageFileEntity::getId,Long.parseLong(id)));
         FileInfo info = BeanUtil.copyProperties(detail,FileInfo.class,"metadata","userMetadata","thMetadata","thUserMetadata","attr");
 
         try {

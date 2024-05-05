@@ -3,16 +3,16 @@ package com.alinesno.infra.base.storage.plugins.service;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.StrUtil;
-import com.alinesno.infra.base.storage.plugins.entity.FileDetailEntity;
-import com.alinesno.infra.base.storage.plugins.mapper.FileDetailMapper;
+import com.alinesno.infra.base.storage.entity.StorageFileEntity;
+import com.alinesno.infra.base.storage.service.IStorageFileService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import org.dromara.x.file.storage.core.FileInfo;
 import org.dromara.x.file.storage.core.recorder.FileRecorder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -21,9 +21,12 @@ import java.util.Map;
  * 用来将文件上传记录保存到数据库，这里使用了 MyBatis-Plus 和 Hutool 工具类
  */
 @Service
-public class FileDetailService extends ServiceImpl<FileDetailMapper, FileDetailEntity> implements FileRecorder {
+public class FileDetailService implements FileRecorder {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
+
+    @Autowired
+    private IStorageFileService fileService ;
 
     /**
      * 保存文件信息到数据库
@@ -31,18 +34,20 @@ public class FileDetailService extends ServiceImpl<FileDetailMapper, FileDetailE
     @SneakyThrows
     @Override
     public boolean save(FileInfo info) {
-        FileDetailEntity detail = BeanUtil.copyProperties(info, FileDetailEntity.class,"metadata","userMetadata","thMetadata","thUserMetadata","attr");
+        StorageFileEntity detail = BeanUtil.copyProperties(info, StorageFileEntity.class,"metadata","userMetadata","thMetadata","thUserMetadata","attr");
 
         //这是手动获 元数据 并转成 json 字符串，方便存储在数据库中
         detail.setMetadata(valueToJson(info.getMetadata()));
         detail.setUserMetadata(valueToJson(info.getUserMetadata()));
         detail.setThMetadata(valueToJson(info.getThMetadata()));
         detail.setThUserMetadata(valueToJson(info.getThUserMetadata()));
+
         //这是手动获 取附加属性字典 并转成 json 字符串，方便存储在数据库中
         detail.setAttr(valueToJson(info.getAttr()));
-        boolean b = save(detail);
+
+        boolean b = fileService.save(detail);
         if (b) {
-            info.setId(detail.getId());
+            info.setId(detail.getId()+"");
         }
         return b;
     }
@@ -53,7 +58,7 @@ public class FileDetailService extends ServiceImpl<FileDetailMapper, FileDetailE
     @SneakyThrows
     @Override
     public FileInfo getByUrl(String url) {
-        FileDetailEntity detail = getOne(new LambdaQueryWrapper<FileDetailEntity>().eq(FileDetailEntity::getUrl,url));
+        StorageFileEntity detail = fileService.getOne(new LambdaQueryWrapper<StorageFileEntity>().eq(StorageFileEntity::getUrl,url));
         FileInfo info = BeanUtil.copyProperties(detail,FileInfo.class,"metadata","userMetadata","thMetadata","thUserMetadata","attr");
 
         //这是手动获取数据库中的 json 字符串 并转成 元数据，方便使用
@@ -71,7 +76,7 @@ public class FileDetailService extends ServiceImpl<FileDetailMapper, FileDetailE
      */
     @Override
     public boolean delete(String url) {
-        remove(new LambdaQueryWrapper<FileDetailEntity>().eq(FileDetailEntity::getUrl,url));
+        fileService.remove(new LambdaQueryWrapper<StorageFileEntity>().eq(StorageFileEntity::getUrl,url));
         return true;
     }
 
@@ -87,9 +92,12 @@ public class FileDetailService extends ServiceImpl<FileDetailMapper, FileDetailE
      * 将 json 字符串转换成元数据对象
      */
     public Map<String, String> jsonToMetadata(String json) throws JsonProcessingException {
-        if (StrUtil.isBlank(json)) return null;
-            return objectMapper.readValue(json,new TypeReference<Map<String, String>>() {
-        });
+
+        if (StrUtil.isBlank(json)) {
+            return null;
+        }else{
+            return objectMapper.readValue(json,new TypeReference<Map<String, String>>() {});
+        }
     }
 
     /**
@@ -99,4 +107,5 @@ public class FileDetailService extends ServiceImpl<FileDetailMapper, FileDetailE
         if (StrUtil.isBlank(json)) return null;
         return objectMapper.readValue(json,Dict.class);
     }
+
 }

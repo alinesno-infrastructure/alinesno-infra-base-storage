@@ -1,12 +1,14 @@
 package com.alinesno.infra.base.storage.entity;
 
-import com.gitee.sunchenbin.mybatis.actable.annotation.ColumnComment;
-import com.gitee.sunchenbin.mybatis.actable.annotation.ColumnType;
-import lombok.Data;
 import com.alinesno.infra.common.facade.mapper.entity.InfraBaseEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.gitee.sunchenbin.mybatis.actable.annotation.Column;
+import com.gitee.sunchenbin.mybatis.actable.constants.MySqlTypeConstant;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.util.Date;
 
 /**
  * <p>
@@ -24,187 +26,99 @@ import lombok.EqualsAndHashCode;
 @Data
 public class StorageFileEntity extends InfraBaseEntity {
 
-    /**
-     * 文件扩展名
-     */
-    @TableField("file_ext")
-	@ColumnType(length=4)
-	@ColumnComment("文件扩展名")
-    private String fileExt;
+//    @TableId("id")
+//    @Column(name = "id", type = MySqlTypeConstant.VARCHAR, length = 32, isKey = true, comment = "文件id")
+//    private String id;
 
-    /**
-     * 文件标识
-     */
-    @TableField("file_flag")
-	@ColumnType(length=1)
-	@ColumnComment("文件标识")
-    private String fileFlag;
+    @TableField("url")
+    @Column(name = "url", type = MySqlTypeConstant.VARCHAR, length = 512, comment = "文件访问地址")
+    private String url;
 
-    /**
-     * 文件名称
-     */
-    @TableField("file_name")
-	@ColumnType(length=255)
-	@ColumnComment("文件名称")
-    private String fileName;
+    @TableField("size")
+    @Column(name = "size", type = MySqlTypeConstant.BIGINT, length = 20, comment = "文件大小，单位字节")
+    private Long size;
 
-    /**
-     * 文件长度
-     */
-    @TableField("file_size")
-	@ColumnType(length=4)
-	@ColumnComment("文件长度")
-    private long fileSize;
+    @TableField("filename")
+    @Column(name = "filename", type = MySqlTypeConstant.VARCHAR, length = 256, comment = "文件名称")
+    private String filename;
 
-    /**
-     * 地址链接
-     */
-    @TableField("file_url")
-	@ColumnType(length=255)
-	@ColumnComment("地址链接")
-    private String fileUrl;
-
-    /**
-     * 是否公开
-     */
-    @TableField("is_public")
-	@ColumnType(length=1)
-	@ColumnComment("是否公开")
-    private String isPublic;
-
-    /**
-     * 保存类型
-     */
-    @TableField("save_type")
-	@ColumnType(length=1)
-	@ColumnComment("保存类型")
-    private String saveType;
-
-    /**
-     * 接口密钥
-     */
-    @TableField("api_key")
-	@ColumnType(length=255)
-	@ColumnComment("接口密钥")
-    private String apiKey;
-
-    /**
-     * 原始文件名
-     */
-    @TableField("originalFilename")
-	@ColumnType(length=255)
-	@ColumnComment("原始文件名")
+    @TableField("original_filename")
+    @Column(name = "original_filename", type = MySqlTypeConstant.VARCHAR, length = 256, comment = "原始文件名")
     private String originalFilename;
 
-    /**
-     * 基础路径
-     */
-    @TableField("basePath")
-	@ColumnType(length=255)
-	@ColumnComment("基础路径")
+    @TableField("base_path")
+    @Column(name = "base_path", type = MySqlTypeConstant.VARCHAR, length = 256, comment = "基础存储路径")
     private String basePath;
 
-    /**
-     * 路径
-     */
     @TableField("path")
-	@ColumnType(length=255)
-	@ColumnComment("路径")
+    @Column(name = "path", type = MySqlTypeConstant.VARCHAR, length = 256, comment = "存储路径")
     private String path;
 
-    /**
-     * 扩展名
-     */
     @TableField("ext")
-	@ColumnType(length=255)
-	@ColumnComment("扩展名")
+    @Column(name = "ext", type = MySqlTypeConstant.VARCHAR, length = 32, comment = "文件扩展名")
     private String ext;
 
-    /**
-     * 内容类型
-     */
-    @TableField("contentType")
-	@ColumnType(length=255)
-	@ColumnComment("内容类型")
+    @TableField("content_type")
+    @Column(name = "content_type", type = MySqlTypeConstant.VARCHAR, length = 128, comment = "MIME类型")
     private String contentType;
 
-    /**
-     * 平台
-     */
     @TableField("platform")
-	@ColumnType(length=255)
-	@ColumnComment("平台")
+    @Column(name = "platform", type = MySqlTypeConstant.VARCHAR, length = 32, comment = "存储平台")
     private String platform;
 
-    /**
-     * 缩略图URL
-     */
-    @TableField("thUrl")
-	@ColumnType(length=255)
-	@ColumnComment("缩略图URL")
+    @TableField("th_url")
+    @Column(name = "th_url", type = MySqlTypeConstant.VARCHAR, length = 512, comment = "缩略图访问路径")
     private String thUrl;
 
-    /**
-     * 缩略图文件名
-     */
-    @TableField("thFilename")
-	@ColumnType(length=255)
-	@ColumnComment("缩略图文件名")
+    @TableField("th_filename")
+    @Column(name = "th_filename", type = MySqlTypeConstant.VARCHAR, length = 256, comment = "缩略图名称")
     private String thFilename;
 
-    /**
-     * 缩略图大小
-     */
-    @TableField("thSize")
-	@ColumnType(length=255)
-	@ColumnComment("缩略图大小")
+    @TableField("th_size")
+    @Column(name = "th_size", type = MySqlTypeConstant.BIGINT, length = 20, comment = "缩略图大小，单位字节")
     private Long thSize;
 
-    /**
-     * 缩略图内容类型
-     */
-    @TableField("thContentType")
-	@ColumnType(length=50)
-	@ColumnComment("缩略图内容类型")
+    @TableField("th_content_type")
+    @Column(name = "th_content_type", type = MySqlTypeConstant.VARCHAR, length = 128, comment = "缩略图MIME类型")
     private String thContentType;
 
-    /**
-     * 对象ID
-     */
-    @TableField("objectId")
-	@ColumnType(length=24)
-	@ColumnComment("对象ID")
+    @TableField("object_id")
+    @Column(name = "object_id", type = MySqlTypeConstant.VARCHAR, length = 32, comment = "文件所属对象id")
     private String objectId;
 
-    /**
-     * 对象类型
-     */
-    @TableField("objectType")
-	@ColumnType(length=50)
-	@ColumnComment("对象类型")
+    @TableField("object_type")
+    @Column(name = "object_type", type = MySqlTypeConstant.VARCHAR, length = 32, comment = "文件所属对象类型，例如用户头像，评价图片")
     private String objectType;
 
-    /**
-     * 属性
-     */
+    @TableField("metadata")
+    @Column(name = "metadata", type = MySqlTypeConstant.TEXT, comment = "文件元数据")
+    private String metadata;
+
+    @TableField("user_metadata")
+    @Column(name = "user_metadata", type = MySqlTypeConstant.TEXT, comment = "文件用户元数据")
+    private String userMetadata;
+
+    @TableField("th_metadata")
+    @Column(name = "th_metadata", type = MySqlTypeConstant.TEXT, comment = "缩略图元数据")
+    private String thMetadata;
+
+    @TableField("th_user_metadata")
+    @Column(name = "th_user_metadata", type = MySqlTypeConstant.TEXT, comment = "缩略图用户元数据")
+    private String thUserMetadata;
+
     @TableField("attr")
-	@ColumnType(length=255)
-	@ColumnComment("属性")
+    @Column(name = "attr", type = MySqlTypeConstant.TEXT, comment = "附加属性")
     private String attr;
 
-    /**
-     * 文件ACL
-     */
-    @TableField("fileAcl")
-	@ColumnType(length=20)
-	@ColumnComment("文件ACL")
+    @TableField("file_acl")
+    @Column(name = "file_acl", type = MySqlTypeConstant.VARCHAR, length = 32, comment = "文件ACL")
     private String fileAcl;
 
-    /**
-     * 缩略图文件ACL
-     */
-    @TableField("thFileAcl")
-	@ColumnType(length=255)
-	@ColumnComment("缩略图文件ACL")
+    @TableField("th_file_acl")
+    @Column(name = "th_file_acl", type = MySqlTypeConstant.VARCHAR, length = 32, comment = "缩略图文件ACL")
     private String thFileAcl;
+
+    @TableField("create_time")
+    @Column(name = "create_time", type = MySqlTypeConstant.DATETIME, comment = "创建时间")
+    private Date createTime;
 }
