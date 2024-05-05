@@ -98,9 +98,9 @@ export const constantRoutes = [
         meta: { title: '项目管理', icon: 'dashboard', affix: true }
       }, 
       {
-        path: '/base/storage/token/index',
-        component: () => import('@/views/base/storage/token/index'),
-        name: '/base/storage/token/index',
+        path: '/base/storage/channelKey/index',
+        component: () => import('@/views/base/storage/channelKey/index'),
+        name: '/base/storage/channelKey/index',
         meta: { title: '存储密钥', icon: 'dashboard', affix: true }
       }, 
       {

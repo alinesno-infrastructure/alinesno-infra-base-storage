@@ -14,10 +14,6 @@
                 <span><i class="el-icon-monitor"></i>
                   {{ currentEnvClusterObj.clusterName }}
                 </span>
-                <span>
-                  <i class="el-icon-link"></i> 
-                  应用地址: {{ currentEnvClusterObj.apiServerUrl }}
-                </span>
               </div>
             </div>
             <div class="title-desc">
@@ -52,8 +48,7 @@ import OperationWorkspaceService from './operation-workspace/service.vue'
 const currentEnvClusterObj = ref({
   appName : '分布式存储服务'  , 
   clusterName: 'minio/oss/nfs等多存储集成'  , 
-  apiServerUrl: 'http://portal.infra.linesno.com'
-}) 
+})
 
 </script>
 

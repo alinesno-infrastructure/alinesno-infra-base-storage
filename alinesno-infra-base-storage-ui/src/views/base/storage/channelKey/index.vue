@@ -31,7 +31,7 @@
                <right-toolbar v-model:showSearch="showSearch" @queryTable="getList" :columns="columns"></right-toolbar>
             </el-row>
 
-            <el-table v-loading="loading" :data="ApplicationList" @selection-change="handleSelectionChange">
+            <el-table v-loading="loading" :data="ChannelKeyList" @selection-change="handleSelectionChange">
                <el-table-column type="selection" width="50" align="center" />
                <el-table-column label="图标" align="center" with="80" key="status" v-if="columns[5].visible">
                </el-table-column>
@@ -53,13 +53,13 @@
                <!-- 操作字段  -->
                <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
                   <template #default="scope">
-                     <el-tooltip content="修改" placement="top" v-if="scope.row.ApplicationId !== 1">
+                     <el-tooltip content="修改" placement="top" v-if="scope.row.ChannelKeyId !== 1">
                         <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
-                           v-hasPermi="['system:Application:edit']"></el-button>
+                           v-hasPermi="['system:ChannelKey:edit']"></el-button>
                      </el-tooltip>
-                     <el-tooltip content="删除" placement="top" v-if="scope.row.ApplicationId !== 1">
+                     <el-tooltip content="删除" placement="top" v-if="scope.row.ChannelKeyId !== 1">
                         <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)"
-                           v-hasPermi="['system:Application:remove']"></el-button>
+                           v-hasPermi="['system:ChannelKey:remove']"></el-button>
                      </el-tooltip>
                   </template>
 
@@ -123,21 +123,21 @@
    </div>
 </template>
 
-<script setup name="Application">
+<script setup name="ChannelKey">
 
 import {
-   listApplication,
-   delApplication,
-   getApplication,
-   updateApplication,
-   addApplication
-} from "@/api/base/storage/application";
+   listChannelKey,
+   delChannelKey,
+   getChannelKey,
+   updateChannelKey,
+   addChannelKey
+} from "@/api/base/storage/channelKey";
 
 const router = useRouter();
 const { proxy } = getCurrentInstance();
 
 // 定义变量
-const ApplicationList = ref([]);
+const ChannelKeyList = ref([]);
 const open = ref(false);
 const loading = ref(true);
 const showSearch = ref(true);
@@ -184,9 +184,9 @@ const { queryParams, form, rules } = toRefs(data);
 /** 查询应用列表 */
 function getList() {
    loading.value = true;
-   listApplication(proxy.addDateRange(queryParams.value, dateRange.value)).then(res => {
+   listChannelKey(proxy.addDateRange(queryParams.value, dateRange.value)).then(res => {
       loading.value = false;
-      ApplicationList.value = res.rows;
+      ChannelKeyList.value = res.rows;
       total.value = res.total;
    });
 };
@@ -207,9 +207,9 @@ function resetQuery() {
 };
 /** 删除按钮操作 */
 function handleDelete(row) {
-   const ApplicationIds = row.id || ids.value;
-   proxy.$modal.confirm('是否确认删除应用编号为"' + ApplicationIds + '"的数据项？').then(function () {
-      return delApplication(ApplicationIds);
+   const ChannelKeyIds = row.id || ids.value;
+   proxy.$modal.confirm('是否确认删除应用编号为"' + ChannelKeyIds + '"的数据项？').then(function () {
+      return delChannelKey(ChannelKeyIds);
    }).then(() => {
       getList();
       proxy.$modal.msgSuccess("删除成功");
@@ -228,7 +228,7 @@ function reset() {
    form.value = {
       id: undefined,
       deptId: undefined,
-      ApplicationName: undefined,
+      ChannelKeyName: undefined,
       nickName: undefined,
       password: undefined,
       phonenumber: undefined,
@@ -253,8 +253,8 @@ function handleAdd() {
 /** 修改按钮操作 */
 function handleUpdate(row) {
    reset();
-   const ApplicationId = row.id || ids.value;
-   getApplication(ApplicationId).then(response => {
+   const ChannelKeyId = row.id || ids.value;
+   getChannelKey(ChannelKeyId).then(response => {
       form.value = response.data;
       open.value = true;
       title.value = "修改应用";
@@ -265,14 +265,14 @@ function handleUpdate(row) {
 function submitForm() {
    proxy.$refs["databaseRef"].validate(valid => {
       if (valid) {
-         if (form.value.ApplicationId != undefined) {
-            updateApplication(form.value).then(response => {
+         if (form.value.ChannelKeyId != undefined) {
+            updateChannelKey(form.value).then(response => {
                proxy.$modal.msgSuccess("修改成功");
                open.value = false;
                getList();
             });
          } else {
-            addApplication(form.value).then(response => {
+            addChannelKey(form.value).then(response => {
                proxy.$modal.msgSuccess("新增成功");
                open.value = false;
                getList();
