@@ -24,9 +24,12 @@ const router = useRouter();
 const menuItems = ref([
   {id:'2' , icon:'fa-brands fa-slack' , link:'/base/storage/project/index' , desc:'项目管理'},
   {id:'3' , icon:'fa-solid fa-list-check' , link:'/base/storage/storage/index' , desc:'存储管理'},
+  {id:'8' , icon:'fa-solid fa-feather' , link:'/base/storage/catalog/index' , desc:'存储分类'},
+  {id:'6' , icon:'fa-solid fa-computer' , link:'/base/storage/analyse/index' , desc:'监控管理'},
   {id:'5' , icon:'fa-solid fa-file-word' , link:'/base/storage/token/index' , desc:'存储密钥'}, 
-  {id:'6' , icon:'fa-solid fa-bomb' , link:'/base/storage/recycle/index' , desc:'回收站'},
+  {id:'9' , icon:'fa-solid fa-bomb' , link:'/base/storage/recycle/index' , desc:'回收站'},
   {id:'7' , icon:'fa-solid fa-at' , link:'/base/storage/backup/index' , desc:'数据备份'},
+  {id:'4' , icon:'fa-solid fa-code-pull-request' , link:'/base/storage/apiRecord/index' , desc:'请求记录'},
 ]);
 
 // 打开服务市场

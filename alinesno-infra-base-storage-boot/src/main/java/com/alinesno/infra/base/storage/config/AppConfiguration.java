@@ -2,6 +2,7 @@ package com.alinesno.infra.base.storage.config;
 
 import com.alinesno.infra.common.facade.enable.EnableActable;
 import com.alinesno.infra.common.web.adapter.sso.enable.EnableInfraSsoApi;
+import com.alinesno.infra.common.web.log.aspect.LogAspect;
 import jakarta.servlet.MultipartConfigElement;
 import org.dromara.x.file.storage.spring.EnableFileStorage;
 import org.mybatis.spring.annotation.MapperScan;
@@ -32,5 +33,10 @@ public class AppConfiguration {
         factory.setMaxRequestSize(DataSize.ofGigabytes(1024L));
 
         return factory.createMultipartConfig();
+    }
+
+    @Bean
+    public LogAspect getLogAspect(){
+        return new LogAspect() ;
     }
 }

@@ -9,11 +9,11 @@ import { parseStrEmpty } from "@/utils/ruoyi";
  */
 
 // 接口配置项
-var prefix = '/api/infra/base/storage/file/' ;
+var prefix = '/api/infra/base/storage/catalog/' ;
 var managerUrl = {
     datatables : prefix +"datatables" ,
     createUrl: prefix + 'add' ,
-    saveUrl: prefix + 'save' ,
+    saveUrl: prefix + 'insertCatalog' ,
     updateUrl: prefix +"modify" ,
     statusUrl: prefix +"changeStatus" ,
     cleanUrl: prefix + "clean",
@@ -21,20 +21,30 @@ var managerUrl = {
     removeUrl: prefix + "delete" ,
     exportUrl: prefix + "exportExcel",
     changeField: prefix + "changeField",
-    catalogTreeSelect: prefix + "catalogTreeSelect",
+    list: prefix + "list",
+    excludeChild: prefix + "excludeChild",
     downloadfile: prefix + "downloadfile"
 }
 
-// 查询部门下拉树结构
-export function catalogTreeSelect() {
+// 查询部门列表（排除节点）
+export function listCatalogExcludeChild(deptId) {
   return request({
-    url: managerUrl.catalogTreeSelect , 
+    url: managerUrl.excludeChild+ '/' + deptId , 
     method: 'get'
   })
 }
 
 // 查询数据库列表
-export function listStorage(query) {
+export function listCatalog(query) {
+  return request({
+    url: managerUrl.list,
+    method: 'get',
+    params: query
+  })
+}
+
+// 查询数据库列表
+export function datatableCatalog(query) {
   return request({
     url: managerUrl.datatables ,
     method: 'post',
@@ -43,7 +53,7 @@ export function listStorage(query) {
 }
 
 // 查询数据库详细
-export function getStorage(databaseId) {
+export function getCatalog(databaseId) {
   return request({
     url: managerUrl.detailUrl + '/' + parseStrEmpty(databaseId),
     method: 'get'
@@ -51,7 +61,7 @@ export function getStorage(databaseId) {
 }
 
 // 新增数据库
-export function addStorage(data) {
+export function addCatalog(data) {
   return request({
     url: managerUrl.saveUrl ,
     method: 'post',
@@ -60,7 +70,7 @@ export function addStorage(data) {
 }
 
 // 修改数据库
-export function updateStorage(data) {
+export function updateCatalog(data) {
   return request({
     url: managerUrl.updateUrl ,
     method: 'put',
@@ -69,7 +79,7 @@ export function updateStorage(data) {
 }
 
 // 删除数据库
-export function delStorage(databaseId) {
+export function delCatalog(databaseId) {
   return request({
     url: managerUrl.removeUrl + '/' + parseStrEmpty(databaseId),
     method: 'delete'

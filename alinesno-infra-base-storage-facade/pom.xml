@@ -27,6 +27,12 @@
 			<artifactId>spring-web</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>com.alinesno.infra.common</groupId>
+			<artifactId>alinesno-infra-common-web-api-log</artifactId>
+			<version>${revision}</version>
+		</dependency>
+
 	</dependencies>
 
 </project>

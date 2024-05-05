@@ -1,9 +1,9 @@
 package com.alinesno.infra.base.storage.api.controller;
 
-import com.alinesno.infra.base.storage.entity.StorageFileEntity;
+import com.alinesno.infra.base.storage.entity.CatalogEntity;
 import com.alinesno.infra.base.storage.service.ICatalogService;
-import com.alinesno.infra.base.storage.service.IStorageFileService;
 import com.alinesno.infra.common.core.constants.SpringInstanceScope;
+import com.alinesno.infra.common.core.utils.StringUtils;
 import com.alinesno.infra.common.facade.pageable.DatatablesPageBean;
 import com.alinesno.infra.common.facade.pageable.TableDataInfo;
 import com.alinesno.infra.common.facade.response.AjaxResult;
@@ -11,10 +11,15 @@ import com.alinesno.infra.common.web.adapter.rest.BaseController;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.sqids.Sqids;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 处理与BusinessLogEntity相关的请求的Controller。
@@ -26,14 +31,11 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @Scope(SpringInstanceScope.PROTOTYPE)
-@RequestMapping("/api/infra/base/storage/file")
-public class StorageFileController extends BaseController<StorageFileEntity, IStorageFileService> {
+@RequestMapping("/api/infra/base/storage/catalog")
+public class CatalogController extends BaseController<CatalogEntity, ICatalogService> {
 
     @Autowired
-    private IStorageFileService service;
-
-    @Autowired
-    private ICatalogService catalogService ;
+    private ICatalogService service;
 
     /**
      * 获取BusinessLogEntity的DataTables数据。
@@ -50,13 +52,46 @@ public class StorageFileController extends BaseController<StorageFileEntity, ISt
         return this.toPage(model, this.getFeign(), page);
     }
 
-    @GetMapping("/catalogTreeSelect")
-    public AjaxResult catalogTreeSelect(){
-        return AjaxResult.success("success" , catalogService.selectCatalogTreeList()) ;
+    @GetMapping("/list")
+    public AjaxResult list(CatalogEntity promptCatalog) {
+        List<CatalogEntity> promptCatalogEntities = service.selectCatalogList(promptCatalog);
+
+        return AjaxResult.success("操作成功." , promptCatalogEntities) ;
+    }
+
+    /**
+     * 保存角色类型
+     * @return
+     */
+    @PostMapping("/insertCatalog")
+    public AjaxResult insertCatalog(@RequestBody CatalogEntity entity){
+
+        // 生成标识
+        Sqids sqids=Sqids.builder().build();
+        String code = sqids.encode(Arrays.asList(1L,2L,3L)); // "86Rf07"
+
+        entity.setCode(code);
+        service.insertCatalog(entity) ;
+
+        return AjaxResult.success("操作成功.") ;
+    }
+
+    /**
+     * 获取到子类
+     * @param deptId
+     * @return
+     */
+    @GetMapping("/excludeChild/{id}")
+    public AjaxResult excludeChild(@PathVariable(value = "id", required = false) Long deptId)
+    {
+        List<CatalogEntity> depts = service.selectCatalogList(new CatalogEntity());
+        depts.removeIf(d -> d.getId().longValue() == deptId || ArrayUtils.contains(StringUtils.split(d.getAncestors(), ","), deptId + ""));
+        return AjaxResult.success("操作成功." , depts);
     }
 
     @Override
-    public IStorageFileService getFeign() {
+    public ICatalogService getFeign() {
         return this.service;
     }
 }
+

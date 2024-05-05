@@ -28,6 +28,19 @@
 			<version>${revision}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.alinesno.infra.common</groupId>
+			<artifactId>alinesno-infra-common-extend-excel</artifactId>
+			<version>${revision}</version>
+		</dependency>
+
+		<!-- 生成短唯一值 -->
+		<dependency>
+			<groupId>org.sqids</groupId>
+			<artifactId>sqids</artifactId>
+			<version>0.1.0</version>
+		</dependency>
+
 	</dependencies>
 
 </project>

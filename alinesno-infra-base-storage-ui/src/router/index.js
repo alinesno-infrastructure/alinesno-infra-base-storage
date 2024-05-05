@@ -80,6 +80,18 @@ export const constantRoutes = [
         meta: { title: '存储管理', icon: 'dashboard', affix: true }
       }, 
       {
+        path: '/base/storage/catalog/index',
+        component: () => import('@/views/base/storage/catalog/index'),
+        name: '/base/storage/catalog/index',
+        meta: { title: '存储分类', icon: 'dashboard', affix: true }
+      }, 
+      {
+        path: '/base/storage/analyse/index',
+        component: () => import('@/views/base/storage/analyse/index'),
+        name: '/base/storage/analyse/index',
+        meta: { title: '监控管理', icon: 'dashboard', affix: true }
+      }, 
+      {
         path: '/base/storage/project/index',
         component: () => import('@/views/base/storage/project/index'),
         name: '/base/storage/project/index',
@@ -103,6 +115,12 @@ export const constantRoutes = [
         name: '/base/storage/recycle/index',
         meta: { title: '回收站', icon: 'dashboard', affix: true }
       }, 
+      {
+        path: '/base/storage/apiRecord/index',
+        component: () => import('@/views/base/storage/apiRecord/index'),
+        name: '/base/storage/apiRecord/index',
+        meta: { title: '日志记录', icon: 'dashboard', affix: true }
+      }
       // >>>>>>>>>>>>>> storage_router_end >>>>>>>>>>>>>>>>>>>>>
 
     ]
