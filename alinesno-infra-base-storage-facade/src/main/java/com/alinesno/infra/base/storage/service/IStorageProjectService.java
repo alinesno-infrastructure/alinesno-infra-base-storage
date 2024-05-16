@@ -10,4 +10,11 @@ import com.alinesno.infra.common.facade.services.IBaseService;
  * @version 1.0.0
  */
 public interface IStorageProjectService extends IBaseService<StorageProjectEntity> {
+
+    /**
+     * 初始化应用
+     * @param userId
+     */
+    void initDefaultApp(long userId);
+
 }

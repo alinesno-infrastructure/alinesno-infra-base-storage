@@ -1,13 +1,14 @@
 package com.alinesno.infra.base.storage.api.controller;
 
-import com.alinesno.infra.base.storage.entity.StorageProjectEntity;
-import com.alinesno.infra.base.storage.service.IStorageProjectService;
+import com.alinesno.infra.base.storage.entity.DocumentTypeEntity;
+import com.alinesno.infra.base.storage.service.IDocumentTypeService;
 import com.alinesno.infra.common.core.constants.SpringInstanceScope;
 import com.alinesno.infra.common.facade.pageable.DatatablesPageBean;
 import com.alinesno.infra.common.facade.pageable.TableDataInfo;
 import com.alinesno.infra.common.web.adapter.login.account.CurrentAccountJwt;
 import com.alinesno.infra.common.web.adapter.rest.BaseController;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import io.swagger.annotations.Api;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -20,26 +21,28 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 处理与BusinessLogEntity相关的请求的Controller。
- * 继承自BaseController类并实现IBusinessLogService接口。
+ * 处理与DocumentTypeEntity相关的请求的Controller。
+ * 继承自BaseController类并实现IDocumentTypeService接口。
  *
- * @author luoxiaodong
+ * @author LuoXiaoDong
  * @version 1.0.0
  */
 @Slf4j
+@Api(tags = "DocumentType")
 @RestController
 @Scope(SpringInstanceScope.PROTOTYPE)
-@RequestMapping("/api/infra/base/storage/project")
-public class StorageProjectController extends BaseController<StorageProjectEntity, IStorageProjectService> {
+@RequestMapping("/api/infra/base/storage/document_type")
+public class DocumentTypeController extends BaseController<DocumentTypeEntity, IDocumentTypeService> {
+
     @Autowired
-    private IStorageProjectService service;
+    private IDocumentTypeService service;
 
     /**
-     * 获取BusinessLogEntity的DataTables数据。
+     * 获取DocumentTypeEntity的DataTables数据。
      *
      * @param request HttpServletRequest对象。
-     * @param model Model对象。
-     * @param page DatatablesPageBean对象。
+     * @param model   Model对象。
+     * @param page    DatatablesPageBean对象。
      * @return 包含DataTables数据的TableDataInfo对象。
      */
     @ResponseBody
@@ -48,18 +51,18 @@ public class StorageProjectController extends BaseController<StorageProjectEntit
         log.debug("page = {}", ToStringBuilder.reflectionToString(page));
 
         long userId = CurrentAccountJwt.getUserId();
-        long count = service.count(new LambdaQueryWrapper<StorageProjectEntity>().eq(StorageProjectEntity::getOperatorId , userId));
+        long countGitRepository = service.count(new LambdaQueryWrapper<DocumentTypeEntity>().eq(DocumentTypeEntity::getOperatorId , userId));
 
-        // 初始化默认应用
-        if (count == 0) {
-            service.initDefaultApp(CurrentAccountJwt.getUserId());
+        // 初始化用户仓库
+        if (countGitRepository == 0) {
+            service.initDocumentType(CurrentAccountJwt.getUserId());
         }
 
         return this.toPage(model, this.getFeign(), page);
     }
 
     @Override
-    public IStorageProjectService getFeign() {
+    public IDocumentTypeService getFeign() {
         return this.service;
     }
 }

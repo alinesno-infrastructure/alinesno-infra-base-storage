@@ -110,6 +110,12 @@ export const constantRoutes = [
         meta: { title: '数据备份', icon: 'dashboard', affix: true }
       }, 
       {
+        path: '/base/storage/type/index',
+        component: () => import('@/views/base/storage/type/index'),
+        name: '/base/storage/type/index',
+        meta: { title: '存储分类', icon: 'dashboard', affix: true }
+      },
+      {
         path: '/base/storage/recycle/index',
         component: () => import('@/views/base/storage/recycle/index'),
         name: '/base/storage/recycle/index',
