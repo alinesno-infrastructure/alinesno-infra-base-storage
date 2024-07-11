@@ -1,7 +1,7 @@
 package com.alinesno.infra.base.storage.api.utils;
 
-import com.alinesno.infra.base.fileshow.core.model.FileAttribute;
-import com.alinesno.infra.base.fileshow.core.service.FilePreview;
+import com.alinesno.infra.base.storage.core.model.FileAttribute;
+import com.alinesno.infra.base.storage.core.service.FilePreview;
 import com.alinesno.infra.base.storage.entity.DocumentInfoEntity;
 import lombok.extern.slf4j.Slf4j;
 

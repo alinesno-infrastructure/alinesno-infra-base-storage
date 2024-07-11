@@ -1,13 +1,13 @@
 package com.alinesno.infra.base.storage.api.provider;
 
-import com.alinesno.infra.base.fileshow.core.model.FileAttribute;
-import com.alinesno.infra.base.fileshow.core.service.CacheService;
-import com.alinesno.infra.base.fileshow.core.service.FileHandlerService;
-import com.alinesno.infra.base.fileshow.core.service.FilePreview;
-import com.alinesno.infra.base.fileshow.core.service.FilePreviewFactory;
-import com.alinesno.infra.base.fileshow.core.service.impl.OtherFilePreviewImpl;
-import com.alinesno.infra.base.fileshow.core.utils.KkFileUtils;
-import com.alinesno.infra.base.fileshow.core.utils.WebUtils;
+import com.alinesno.infra.base.storage.core.model.FileAttribute;
+import com.alinesno.infra.base.storage.core.service.CacheService;
+import com.alinesno.infra.base.storage.core.service.FileHandlerService;
+import com.alinesno.infra.base.storage.core.service.FilePreview;
+import com.alinesno.infra.base.storage.core.service.FilePreviewFactory;
+import com.alinesno.infra.base.storage.core.service.impl.OtherFilePreviewImpl;
+import com.alinesno.infra.base.storage.core.utils.KkFileUtils;
+import com.alinesno.infra.base.storage.core.utils.WebUtils;
 import com.alinesno.infra.base.storage.api.utils.FileParser;
 import com.alinesno.infra.base.storage.entity.DocumentInfoEntity;
 import com.alinesno.infra.base.storage.service.IDocumentInfoService;
@@ -52,7 +52,6 @@ public class OnlinePreviewController {
 
     @Autowired
     private IDocumentInfoService documentInfoService ;
-
     private final FilePreviewFactory previewFactory;
     private final CacheService cacheService;
     private final FileHandlerService fileHandlerService;
