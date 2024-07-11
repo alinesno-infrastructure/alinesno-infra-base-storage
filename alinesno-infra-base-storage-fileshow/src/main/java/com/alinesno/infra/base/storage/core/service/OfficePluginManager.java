@@ -1,6 +1,8 @@
 package com.alinesno.infra.base.storage.core.service;
 
 import com.alinesno.infra.base.storage.core.utils.LocalOfficeUtils;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 import org.apache.commons.lang3.StringUtils;
 import org.jodconverter.core.office.InstalledOfficeManagerHolder;
 import org.jodconverter.core.office.OfficeException;
@@ -15,8 +17,6 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -52,35 +52,35 @@ public class OfficePluginManager {
     /**
      * 启动Office组件进程
      */
-    @PostConstruct
-    public void startOfficeManager() throws OfficeException {
-        File officeHome = LocalOfficeUtils.getDefaultOfficeHome();
-        if (officeHome == null) {
-            throw new RuntimeException("找不到office组件，请确认'office.home'配置是否有误");
-        }
-        boolean killOffice = killProcess();
-        if (killOffice) {
-            logger.warn("检测到有正在运行的office进程，已自动结束该进程");
-        }
-        try {
-            String[] portsString = serverPorts.split(",");
-            int[] ports = Arrays.stream(portsString).mapToInt(Integer::parseInt).toArray();
-            long timeout = DurationStyle.detectAndParse(timeOut).toMillis();
-            long taskexecutiontimeout = DurationStyle.detectAndParse(taskExecutionTimeout).toMillis();
-            officeManager = LocalOfficeManager.builder()
-                    .officeHome(officeHome)
-                    .portNumbers(ports)
-                    .processTimeout(timeout)
-                    .maxTasksPerProcess(maxTasksPerProcess)
-                    .taskExecutionTimeout(taskexecutiontimeout)
-                    .build();
-            officeManager.start();
-            InstalledOfficeManagerHolder.setInstance(officeManager);
-        } catch (Exception e) {
-            logger.error("启动office组件失败，请检查office组件是否可用");
-            throw e;
-        }
-    }
+//    @PostConstruct
+//    public void startOfficeManager() throws OfficeException {
+//        File officeHome = LocalOfficeUtils.getDefaultOfficeHome();
+//        if (officeHome == null) {
+//            throw new RuntimeException("找不到office组件，请确认'office.home'配置是否有误");
+//        }
+//        boolean killOffice = killProcess();
+//        if (killOffice) {
+//            logger.warn("检测到有正在运行的office进程，已自动结束该进程");
+//        }
+//        try {
+//            String[] portsString = serverPorts.split(",");
+//            int[] ports = Arrays.stream(portsString).mapToInt(Integer::parseInt).toArray();
+//            long timeout = DurationStyle.detectAndParse(timeOut).toMillis();
+//            long taskexecutiontimeout = DurationStyle.detectAndParse(taskExecutionTimeout).toMillis();
+//            officeManager = LocalOfficeManager.builder()
+//                    .officeHome(officeHome)
+//                    .portNumbers(ports)
+//                    .processTimeout(timeout)
+//                    .maxTasksPerProcess(maxTasksPerProcess)
+//                    .taskExecutionTimeout(taskexecutiontimeout)
+//                    .build();
+//            officeManager.start();
+//            InstalledOfficeManagerHolder.setInstance(officeManager);
+//        } catch (Exception e) {
+//            logger.error("启动office组件失败，请检查office组件是否可用");
+//            throw e;
+//        }
+//    }
 
     private boolean killProcess() {
         boolean flag = false;

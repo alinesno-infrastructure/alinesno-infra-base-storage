@@ -1,11 +1,11 @@
 package com.alinesno.infra.base.storage.core.config;
 
 import com.alinesno.infra.base.storage.core.utils.ConfigUtils;
+import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;

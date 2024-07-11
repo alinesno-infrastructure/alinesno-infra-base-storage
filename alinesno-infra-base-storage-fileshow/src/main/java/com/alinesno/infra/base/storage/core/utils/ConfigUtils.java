@@ -11,7 +11,7 @@ import java.util.Properties;
  **/
 public class ConfigUtils {
 
-    private static final String MAIN_DIRECTORY_NAME = "alinesno-infra-base-fileshow-boot";
+    private static final String MAIN_DIRECTORY_NAME = "alinesno-infra-base-storage-boot";
 
     public static String getHomePath() {
         String userDir = System.getenv("KKFILEVIEW_BIN_FOLDER");
@@ -70,7 +70,7 @@ public class ConfigUtils {
     public static String getCustomizedConfigPath() {
         String homePath = getHomePath();
         String separator = File.separator;
-        return homePath + separator + "resources" + separator +  "config" + separator + "fileshow.properties";
+        return homePath + separator + "resources" + separator +  "config" + separator + "storage.properties";
     }
 
     public synchronized static void restorePropertiesFromEnvFormat(Properties properties) {
