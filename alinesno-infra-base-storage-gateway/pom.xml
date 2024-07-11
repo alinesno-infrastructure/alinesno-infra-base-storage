@@ -21,6 +21,11 @@
 			<artifactId>alinesno-infra-base-storage-facade</artifactId>
 			<version>${revision}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.alinesno.infra.base</groupId>
+			<artifactId>alinesno-infra-base-storage-fileshow</artifactId>
+			<version>${revision}</version>
+		</dependency>
 
 		<dependency>
 			<groupId>com.alinesno.infra.common</groupId>
