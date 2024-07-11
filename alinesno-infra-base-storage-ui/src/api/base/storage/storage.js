@@ -75,3 +75,8 @@ export function delStorage(databaseId) {
     method: 'delete'
   })
 }
+
+export function downloadFile(databaseId) {
+    return request({
+    })
+}

@@ -1,4 +1,4 @@
-import { createWebHistory, createRouter } from 'vue-router'
+import {createWebHistory, createRouter} from 'vue-router'
 /* Layout */
 import Layout from '@/layout/SaaSLayout'
 // import Layout from '@/layout'
@@ -17,150 +17,157 @@ import Layout from '@/layout/SaaSLayout'
  * roles: ['admin', 'common']       // 访问路由的角色权限
  * permissions: ['a:a:a', 'b:b:b']  // 访问路由的菜单权限
  * meta : {
-    noCache: true                   // 如果设置为true，则不会被 <keep-alive> 缓存(默认 false)
-    title: 'title'                  // 设置该路由在侧边栏和面包屑中展示的名字
-    icon: 'svg-name'                // 设置该路由的图标，对应路径src/assets/icons/svg
-    breadcrumb: false               // 如果设置为false，则不会在breadcrumb面包屑中显示
-    activeMenu: '/system/user'      // 当路由设置了该属性，则会高亮相对应的侧边栏。
-  }
+ noCache: true                   // 如果设置为true，则不会被 <keep-alive> 缓存(默认 false)
+ title: 'title'                  // 设置该路由在侧边栏和面包屑中展示的名字
+ icon: 'svg-name'                // 设置该路由的图标，对应路径src/assets/icons/svg
+ breadcrumb: false               // 如果设置为false，则不会在breadcrumb面包屑中显示
+ activeMenu: '/system/user'      // 当路由设置了该属性，则会高亮相对应的侧边栏。
+ }
  */
 
 // 公共路由
 export const constantRoutes = [
-  {
-    path: '/login',
-    component: () => import('@/views/login'),
-    hidden: true
-  },
-   {
-     path: '/sso/login',
-     component: () => import('@/views/loginSso'),
-     hidden: true
-   },
-  {
-    path: "/:pathMatch(.*)*",
-    component: () => import('@/views/error/404'),
-    hidden: true
-  },
-  {
-    path: '/401',
-    component: () => import('@/views/error/401'),
-    hidden: true
-  },
-  {
-    path: '',
-    component: Layout,
-    redirect: '/index',
-    hidden: true,
-    children: [
-      {
-        path: '/index',
-        component: () => import('@/views/index'),
-        name: '/index',
-        meta: { title: '首页', icon: 'dashboard', affix: true }
-      },
-      {
-        path: '/dashboard/suportTechnique',
-        component: () => import('@/views/suportTechnique'),
-        name: '/dashboard/suportTechnique',
-        meta: { title: '支持管理', icon: 'dashboard', affix: true }
-      },
-      {
-        path: '/dashboard/learnPanel',
-        component: () => import('@/views/learnPanel'),
-        name: '/dashboard/learnPanel',
-        meta: { title: '学习手册', icon: 'dashboard', affix: true }
-      },
+    {
+        path: '/login',
+        component: () => import('@/views/login'),
+        hidden: true
+    },
+    {
+        path: '/sso/login',
+        component: () => import('@/views/loginSso'),
+        hidden: true
+    },
+    {
+        path: "/:pathMatch(.*)*",
+        component: () => import('@/views/error/404'),
+        hidden: true
+    },
+    {
+        path: '/401',
+        component: () => import('@/views/error/401'),
+        hidden: true
+    },
+    {
+        path: '',
+        component: Layout,
+        redirect: '/index',
+        hidden: true,
+        children: [
+            {
+                path: '/index',
+                component: () => import('@/views/index'),
+                name: '/index',
+                meta: {title: '首页', icon: 'dashboard', affix: true}
+            },
+            {
+                path: '/dashboard/suportTechnique',
+                component: () => import('@/views/suportTechnique'),
+                name: '/dashboard/suportTechnique',
+                meta: {title: '支持管理', icon: 'dashboard', affix: true}
+            },
+            {
+                path: '/dashboard/learnPanel',
+                component: () => import('@/views/learnPanel'),
+                name: '/dashboard/learnPanel',
+                meta: {title: '学习手册', icon: 'dashboard', affix: true}
+            },
 
-      // >>>>>>>>>>>>>> storage_router_start >>>>>>>>>>>>>>>>>>>>>
-      {
-        path: '/base/storage/storage/index',
-        component: () => import('@/views/base/storage/storage/index'),
-        name: '/base/storage/storage/index',
-        meta: { title: '存储管理', icon: 'dashboard', affix: true }
-      }, 
-      {
-        path: '/base/storage/catalog/index',
-        component: () => import('@/views/base/storage/catalog/index'),
-        name: '/base/storage/catalog/index',
-        meta: { title: '存储分类', icon: 'dashboard', affix: true }
-      }, 
-      {
-        path: '/base/storage/analyse/index',
-        component: () => import('@/views/base/storage/analyse/index'),
-        name: '/base/storage/analyse/index',
-        meta: { title: '监控管理', icon: 'dashboard', affix: true }
-      }, 
-      {
-        path: '/base/storage/project/index',
-        component: () => import('@/views/base/storage/project/index'),
-        name: '/base/storage/project/index',
-        meta: { title: '项目管理', icon: 'dashboard', affix: true }
-      }, 
-      {
-        path: '/base/storage/channelKey/index',
-        component: () => import('@/views/base/storage/channelKey/index'),
-        name: '/base/storage/channelKey/index',
-        meta: { title: '存储密钥', icon: 'dashboard', affix: true }
-      }, 
-      {
-        path: '/base/storage/backup/index',
-        component: () => import('@/views/base/storage/backup/index'),
-        name: '/base/storage/backup/index',
-        meta: { title: '数据备份', icon: 'dashboard', affix: true }
-      }, 
-      {
-        path: '/base/storage/type/index',
-        component: () => import('@/views/base/storage/type/index'),
-        name: '/base/storage/type/index',
-        meta: { title: '存储分类', icon: 'dashboard', affix: true }
-      },
-      {
-        path: '/base/storage/recycle/index',
-        component: () => import('@/views/base/storage/recycle/index'),
-        name: '/base/storage/recycle/index',
-        meta: { title: '回收站', icon: 'dashboard', affix: true }
-      }, 
-      {
-        path: '/base/storage/apiRecord/index',
-        component: () => import('@/views/base/storage/apiRecord/index'),
-        name: '/base/storage/apiRecord/index',
-        meta: { title: '日志记录', icon: 'dashboard', affix: true }
-      }
-      // >>>>>>>>>>>>>> storage_router_end >>>>>>>>>>>>>>>>>>>>>
+            // >>>>>>>>>>>>>> storage_router_start >>>>>>>>>>>>>>>>>>>>>
+            {
+                path: '/base/storage/storage/index',
+                component: () => import('@/views/base/storage/storage/index.vue'),
+                name: '/base/storage/storage/index',
+                meta: {title: '存储管理', icon: 'dashboard', affix: true},
+                redirect: '/base/storage/storage/index/file',
+                children: [
+                    {
+                        path: 'file',
+                        name: 'file',
+                        component: () => import('@/views/base/storage/storage/FileList.vue')
+                    }
+                ],
+            },
+            {
+                path: '/base/storage/catalog/index',
+                component: () => import('@/views/base/storage/catalog/index'),
+                name: '/base/storage/catalog/index',
+                meta: {title: '存储分类', icon: 'dashboard', affix: true}
+            },
+            {
+                path: '/base/storage/analyse/index',
+                component: () => import('@/views/base/storage/analyse/index'),
+                name: '/base/storage/analyse/index',
+                meta: {title: '监控管理', icon: 'dashboard', affix: true}
+            },
+            {
+                path: '/base/storage/project/index',
+                component: () => import('@/views/base/storage/project/index'),
+                name: '/base/storage/project/index',
+                meta: {title: '项目管理', icon: 'dashboard', affix: true}
+            },
+            {
+                path: '/base/storage/channelKey/index',
+                component: () => import('@/views/base/storage/channelKey/index'),
+                name: '/base/storage/channelKey/index',
+                meta: {title: '存储密钥', icon: 'dashboard', affix: true}
+            },
+            {
+                path: '/base/storage/backup/index',
+                component: () => import('@/views/base/storage/backup/index'),
+                name: '/base/storage/backup/index',
+                meta: {title: '数据备份', icon: 'dashboard', affix: true}
+            },
+            {
+                path: '/base/storage/type/index',
+                component: () => import('@/views/base/storage/type/index'),
+                name: '/base/storage/type/index',
+                meta: {title: '存储分类', icon: 'dashboard', affix: true}
+            },
+            {
+                path: '/base/storage/recycle/index',
+                component: () => import('@/views/base/storage/recycle/index'),
+                name: '/base/storage/recycle/index',
+                meta: {title: '回收站', icon: 'dashboard', affix: true}
+            },
+            {
+                path: '/base/storage/apiRecord/index',
+                component: () => import('@/views/base/storage/apiRecord/index'),
+                name: '/base/storage/apiRecord/index',
+                meta: {title: '日志记录', icon: 'dashboard', affix: true}
+            }
+            // >>>>>>>>>>>>>> storage_router_end >>>>>>>>>>>>>>>>>>>>>
 
-    ]
-  },
-  {
-    path: '/user',
-    component: Layout,
-    hidden: true,
-    redirect: 'noredirect',
-    children: [
-      {
-        path: 'profile',
-        component: () => import('@/views/system/user/profile/index'),
-        name: 'Profile',
-        meta: { title: '个人中心', icon: 'user' }
-      }
-    ]
-  }
+        ]
+    },
+    {
+        path: '/user',
+        component: Layout,
+        hidden: true,
+        redirect: 'noredirect',
+        children: [
+            {
+                path: 'profile',
+                component: () => import('@/views/system/user/profile/index'),
+                name: 'Profile',
+                meta: {title: '个人中心', icon: 'user'}
+            }
+        ]
+    }
 ]
 
 // 动态路由，基于用户权限动态去加载
-export const dynamicRoutes = [
-]
+export const dynamicRoutes = []
 
 const router = createRouter({
-  history: createWebHistory(),
-  routes: constantRoutes,
-  scrollBehavior(to, from, savedPosition) {
-    if (savedPosition) {
-      return savedPosition
-    } else {
-      return { top: 0 }
-    }
-  },
+    history: createWebHistory(),
+    routes: constantRoutes,
+    scrollBehavior(to, from, savedPosition) {
+        if (savedPosition) {
+            return savedPosition
+        } else {
+            return {top: 0}
+        }
+    },
 });
 
 export default router;
