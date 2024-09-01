@@ -3,7 +3,7 @@
       <el-row :gutter="20">
          <!--应用数据-->
          <el-col :span="24" :xs="24">
-            <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="100px">
+            <!-- <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="100px">
                <el-form-item label="应用名称" prop="typeName">
                   <el-input v-model="queryParams.typeName" placeholder="请输入应用名称" clearable style="width: 240px" @keyup.enter="handleQuery" />
                </el-form-item>
@@ -11,10 +11,10 @@
                   <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
                   <el-button icon="Refresh" @click="resetQuery">重置</el-button>
                </el-form-item>
-            </el-form>
+            </el-form> -->
 
-            <el-table v-loading="loading" :data="TypeList" @selection-change="handleSelectionChange">
-               <el-table-column type="selection" width="50" align="center" />
+            <el-table ref="multipleTableRef" v-loading="loading" :data="typeList" @selection-change="handleSelectionChange">
+               <el-table-column type="index" 序号 width="50" align="center" />
                <el-table-column label="图标" align="center" width="70" key="icon" v-if="columns[5].visible">
                   <template #default="scope">
                      <span style="font-size:25px;color:#3b5998">
@@ -26,53 +26,22 @@
                <!-- 业务字段-->
                <el-table-column label="类型名称" align="center" width="150" key="typeName" prop="typeName" v-if="columns[0].visible" />
                <el-table-column label="类型描述" align="left" key="typeDesc" prop="typeDesc" v-if="columns[0].visible" />
+               <el-table-column  label="选择" type="selection" width="50" align="center" />
             </el-table>
             <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize" @pagination="getList" />
          </el-col>
       </el-row>
 
-      <!-- 添加或修改应用配置对话框 -->
-      <el-dialog :title="title" v-model="open" width="900px" append-to-body>
-         <el-form :model="form" :rules="rules" ref="databaseRef" label-width="100px">
-            <el-row>
-               <el-col :span="24">
-                  <el-form-item label="图标" prop="icon">
-                     <el-input v-model="form.icon" placeholder="请输入图标icon" maxlength="128" />
-                  </el-form-item>
-               </el-col>
-            </el-row>
-            <el-row>
-               <el-col :span="24">
-                  <el-form-item label="类型名称" prop="typeName">
-                     <el-input v-model="form.typeName" placeholder="请输入应用名称" maxlength="50" />
-                  </el-form-item>
-               </el-col>
-            </el-row>
-               <el-col :span="24">
-                  <el-form-item label="限流次数" prop="requestCount">
-                     <el-input v-model="form.requestCount" placeholder="请输入每分钟限流" maxlength="50" />
-                  </el-form-item>
-               </el-col>
-            <el-row>
-               <el-col :span="24">
-                  <el-form-item label="类型描述" prop="typeDesc">
-                     <el-input v-model="form.typeDesc" placeholder="请输入类型描述" maxlength="256" />
-                  </el-form-item>
-               </el-col>
-            </el-row>
-         </el-form>
-         <template #footer>
-            <div class="dialog-footer">
-               <el-button type="primary" @click="submitForm">确 定</el-button>
-               <el-button @click="cancel">取 消</el-button>
-            </div>
-         </template>
-      </el-dialog>
-
    </div>
 </template>
 
 <script setup name="Type">
+
+const props = defineProps({
+   selectedRowKeys: {
+      type: String ,
+   }
+})
 
 import {
    listType,
@@ -87,11 +56,12 @@ const router = useRouter();
 const { proxy } = getCurrentInstance();
 
 // 定义变量
-const TypeList = ref([]);
+const typeList = ref([]);
 const open = ref(false);
 const loading = ref(true);
 const showSearch = ref(true);
 const ids = ref([]);
+const types = ref([]);
 const single = ref(true);
 const multiple = ref(true);
 const total = ref(0);
@@ -101,7 +71,7 @@ const postOptions = ref([]);
 const roleOptions = ref([]);
 
 // 判断是否在点击弹窗确认按钮时才调用接口
-const tags = ref('')
+const multipleTableRef = ref(null)
 
 // 列显隐信息
 const columns = ref([
@@ -139,8 +109,12 @@ function getList() {
    loading.value = true;
    listType(proxy.addDateRange(queryParams.value, dateRange.value)).then(res => {
       loading.value = false;
-      TypeList.value = res.rows;
+      typeList.value = res.rows;
       total.value = res.total;
+
+      nextTick(() => {
+         handleSetRow(props.selectedRowKeys)
+      });
    });
 };
 
@@ -159,19 +133,14 @@ function resetQuery() {
    handleQuery();
 };
 /** 删除按钮操作 */
-function handleDelete(row) {
-   const TypeIds = row.id || ids.value;
-   proxy.$modal.confirm('是否确认删除应用编号为"' + TypeIds + '"的数据项？').then(function () {
-      return delType(TypeIds);
-   }).then(() => {
-      getList();
-      proxy.$modal.msgSuccess("删除成功");
-   }).catch(() => { });
+function handleSelectRow() {
+   return ids.value;
 };
 
 /** 选择条数  */
 function handleSelectionChange(selection) {
    ids.value = selection.map(item => item.id);
+   types.value = selection.map(item => item.typeName);
    single.value = selection.length != 1;
    multiple.value = !selection.length;
 };
@@ -203,37 +172,27 @@ function handleAdd() {
    title.value = "添加应用";
 };
 
-/** 修改按钮操作 */
-function handleUpdate(row) {
-   reset();
-   const id = row.id || ids.value;
-   getType(id).then(response => {
-      form.value = response.data;
-      open.value = true;
-      title.value = "修改应用";
-   });
-};
+/** 传递进入的数组默认选中 */
+function handleSetRow() {
 
-/** 提交按钮 */
-function submitForm() {
-   proxy.$refs["databaseRef"].validate(valid => {
-      if (valid) {
-         if (form.value.id != undefined) {
-            updateType(form.value).then(response => {
-               proxy.$modal.msgSuccess("修改成功");
-               open.value = false;
-               getList();
-            });
-         } else {
-            addType(form.value).then(response => {
-               proxy.$modal.msgSuccess("新增成功");
-               open.value = false;
-               getList();
-            });
-         }
+  console.log('rows = ' + props.selectedRowKeys)
+  // 解析传入的字符串化数组
+  let json = props.selectedRowKeys.replace(/:s*([0-9]{15,})s*(,?)/g, ': "$1" $2') ;
+  let documentTypeArr = JSON.parse(json);
+
+  // 遍历表格中的每一行
+  typeList.value.forEach(row => {
+    // 如果表格实例存在
+    if (multipleTableRef.value) {
+      console.log('row.id = ' + row.id + ' , documentTypeArr = ' + documentTypeArr)
+      // 判断 row.id 是否在 documentTypeArr 中
+      if (documentTypeArr.includes(row.id)) {
+        // 如果存在，则选中该行
+        multipleTableRef.value.toggleRowSelection(row, true);
       }
-   });
-};
+    }
+  });
+}
 
 const handleChangStatusField = async(field , value , id) => {
     // 判断tags值 这样就不会进页面时调用了
@@ -249,5 +208,8 @@ const handleChangStatusField = async(field , value , id) => {
 }
 
 getList();
+
+// 向父类暴露方法
+defineExpose({ handleSetRow , handleSelectRow });
 
 </script>
