@@ -70,7 +70,7 @@ public class ConfigUtils {
     public static String getCustomizedConfigPath() {
         String homePath = getHomePath();
         String separator = File.separator;
-        return homePath + separator + "resources" + separator +  "config" + separator + "storage.properties";
+        return homePath + separator + "resources" + separator + "config" + separator + "storage.properties";
     }
 
     public synchronized static void restorePropertiesFromEnvFormat(Properties properties) {
