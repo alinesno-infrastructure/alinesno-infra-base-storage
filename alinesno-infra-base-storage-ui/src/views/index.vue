@@ -10,14 +10,9 @@
           <div class="icon">
             <div class="title">
                   {{ currentEnvClusterObj.appName }}
-              <div class="cluster-info">
-                <span><i class="el-icon-monitor"></i>
-                  {{ currentEnvClusterObj.clusterName }}
-                </span>
-              </div>
             </div>
             <div class="title-desc">
-              集群状态展示集群资源的概览和详情，您可以查看集群资源的监控数据和用量排行情况。
+                  {{ currentEnvClusterObj.appDesc}}
             </div>
           </div>
         </div>
@@ -47,7 +42,7 @@ import OperationWorkspaceService from './operation-workspace/service.vue'
 
 const currentEnvClusterObj = ref({
   appName : '分布式存储服务'  , 
-  clusterName: 'minio/oss/nfs等多存储集成'  , 
+  appDesc: '针对于大数据和海量文件存储管理服务，非结构化数据存储能力'  , 
 })
 
 </script>
