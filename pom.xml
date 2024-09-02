@@ -28,6 +28,7 @@
         <module>alinesno-infra-base-storage-adapter</module> <!-- 适配层 -->
         <module>alinesno-infra-base-storage-plugins</module>  <!-- 存储上传配置和策略 -->
         <module>alinesno-infra-base-storage-gateway</module>  <!-- 接口服务 -->
+        <module>alinesno-infra-base-storage-initialize</module>  <!-- 工程初始化 -->
         <module>alinesno-infra-base-storage-boot</module>  <!-- 启动服务 -->
 
         <module>alinesno-infra-base-storage-sdk</module>  <!-- 对外引用上传SDK -->
