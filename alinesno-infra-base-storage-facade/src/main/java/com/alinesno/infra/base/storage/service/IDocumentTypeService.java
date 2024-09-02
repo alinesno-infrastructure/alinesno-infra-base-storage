@@ -3,6 +3,8 @@ package com.alinesno.infra.base.storage.service;
 import com.alinesno.infra.base.storage.entity.DocumentTypeEntity;
 import com.alinesno.infra.common.facade.services.IBaseService;
 
+import java.util.List;
+
 /**
  * <p>
  * 服务类
@@ -23,8 +25,10 @@ public interface IDocumentTypeService extends IBaseService<DocumentTypeEntity> {
 
     /**
      * 初始化文档结构
+     *
      * @param userId
+     * @return
      */
-    void initDocumentType(long userId);
+    List<DocumentTypeEntity> initDocumentType(long userId);
 
 }
