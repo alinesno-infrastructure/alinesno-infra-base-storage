@@ -1,5 +1,6 @@
 package com.alinesno.infra.base.storage.api.provider;
 
+import com.alinesno.infra.base.storage.api.utils.FileParser;
 import com.alinesno.infra.base.storage.core.model.FileAttribute;
 import com.alinesno.infra.base.storage.core.service.CacheService;
 import com.alinesno.infra.base.storage.core.service.FileHandlerService;
@@ -8,7 +9,6 @@ import com.alinesno.infra.base.storage.core.service.FilePreviewFactory;
 import com.alinesno.infra.base.storage.core.service.impl.OtherFilePreviewImpl;
 import com.alinesno.infra.base.storage.core.utils.KkFileUtils;
 import com.alinesno.infra.base.storage.core.utils.WebUtils;
-import com.alinesno.infra.base.storage.api.utils.FileParser;
 import com.alinesno.infra.base.storage.entity.DocumentInfoEntity;
 import com.alinesno.infra.base.storage.service.IDocumentInfoService;
 import com.alinesno.infra.common.web.log.annotation.Log;
@@ -84,12 +84,12 @@ public class OnlinePreviewController {
         FilePreview filePreview = previewFactory.get(fileAttribute);
 
         // 判断是否开通这个接口服务的权限
-        String projectCode = req.getParameter("projectCode") ;
-        boolean checkServiceOpen = documentInfoService.checkAccountService(projectCode , fileAttribute.getSuffix()) ;
-        if(!checkServiceOpen){
-            String errorMsg = "appId文档权限不足，请配置查看权限." ;
-            return otherFilePreview.notSupportedFile(model, errorMsg);
-        }
+//        String projectCode = req.getParameter("projectCode") ;
+//        boolean checkServiceOpen = documentInfoService.checkAccountService(projectCode , fileAttribute.getSuffix()) ;
+//        if(!checkServiceOpen){
+//            String errorMsg = "appId文档权限不足，请配置查看权限." ;
+//            return otherFilePreview.notSupportedFile(model, errorMsg);
+//        }
 
         // 保存文件到数据库中
         DocumentInfoEntity documentInfoEntity = FileParser.parseFileAttribute(fileAttribute , filePreview) ;
