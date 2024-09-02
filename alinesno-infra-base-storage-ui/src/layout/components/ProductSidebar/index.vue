@@ -27,7 +27,7 @@ const menuItems = ref([
   {id:'8' , icon:'fa-solid fa-file-pdf' , link:'/base/storage/catalog/index' , desc:'存储分类'},
   {id:'10' , icon:'fa-solid fa-feather' , link:'/base/storage/type/index' , desc:'文件类型'},
   {id:'6' , icon:'fa-solid fa-computer' , link:'/base/storage/analyse/index' , desc:'监控管理'},
-  {id:'5' , icon:'fa-solid fa-file-word' , link:'/base/storage/channelKey/index' , desc:'存储密钥'},
+  {id:'5' , icon:'fa-solid fa-file-word' , link:'/base/storage/channelKey/index' , desc:'存储渠道'},
   {id:'9' , icon:'fa-solid fa-bomb' , link:'/base/storage/recycle/index' , desc:'回收站'},
   {id:'7' , icon:'fa-solid fa-at' , link:'/base/storage/backup/index' , desc:'数据备份'},
   {id:'4' , icon:'fa-solid fa-code-pull-request' , link:'/base/storage/apiRecord/index' , desc:'请求记录'},
