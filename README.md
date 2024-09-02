@@ -4,3 +4,4 @@
 ## 鸣谢
 
 - 存储上传框架[spring-file-storage](https://github.com/1171736840/spring-file-storage)
+- 文件预览框架[kkFileView](https://gitee.com/kekingcn/file-online-preview)
