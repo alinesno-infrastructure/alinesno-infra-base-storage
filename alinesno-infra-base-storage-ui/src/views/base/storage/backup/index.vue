@@ -31,7 +31,7 @@
                <right-toolbar v-model:showSearch="showSearch" @queryTable="getList" :columns="columns"></right-toolbar>
             </el-row>
 
-            <el-table v-loading="loading" :data="StorageList" @selection-change="handleSelectionChange">
+            <el-table v-loading="loading" :data="BackupList" @selection-change="handleSelectionChange">
                <el-table-column type="selection" width="50" align="center" />
                <el-table-column label="图标" align="center" with="80" key="status" v-if="columns[5].visible">
                </el-table-column>
@@ -53,13 +53,13 @@
                <!-- 操作字段  -->
                <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
                   <template #default="scope">
-                     <el-tooltip content="修改" placement="top" v-if="scope.row.StorageId !== 1">
+                     <el-tooltip content="修改" placement="top" v-if="scope.row.BackupId !== 1">
                         <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)"
-                           v-hasPermi="['system:Storage:edit']"></el-button>
+                           v-hasPermi="['system:Backup:edit']"></el-button>
                      </el-tooltip>
-                     <el-tooltip content="删除" placement="top" v-if="scope.row.StorageId !== 1">
+                     <el-tooltip content="删除" placement="top" v-if="scope.row.BackupId !== 1">
                         <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)"
-                           v-hasPermi="['system:Storage:remove']"></el-button>
+                           v-hasPermi="['system:Backup:remove']"></el-button>
                      </el-tooltip>
                   </template>
 
@@ -123,22 +123,21 @@
    </div>
 </template>
 
-<script setup name="Storage">
+<script setup name="Backup">
 
 import {
-   listStorage,
-   delStorage,
-   getStorage,
-   updateStorage,
-   catalogTreeSelect,
-   addStorage
-} from "@/api/base/storage/storage";
+   listBackup,
+   delBackup,
+   getBackup,
+   updateBackup,
+   addBackup
+} from "@/api/base/storage/backup";
 
 const router = useRouter();
 const { proxy } = getCurrentInstance();
 
 // 定义变量
-const StorageList = ref([]);
+const BackupList = ref([]);
 const open = ref(false);
 const loading = ref(true);
 const showSearch = ref(true);
@@ -185,9 +184,9 @@ const { queryParams, form, rules } = toRefs(data);
 /** 查询应用列表 */
 function getList() {
    loading.value = true;
-   listStorage(proxy.addDateRange(queryParams.value, dateRange.value)).then(res => {
+   listBackup(proxy.addDateRange(queryParams.value, dateRange.value)).then(res => {
       loading.value = false;
-      StorageList.value = res.rows;
+      BackupList.value = res.rows;
       total.value = res.total;
    });
 };
@@ -208,9 +207,9 @@ function resetQuery() {
 };
 /** 删除按钮操作 */
 function handleDelete(row) {
-   const StorageIds = row.id || ids.value;
-   proxy.$modal.confirm('是否确认删除应用编号为"' + StorageIds + '"的数据项？').then(function () {
-      return delStorage(StorageIds);
+   const BackupIds = row.id || ids.value;
+   proxy.$modal.confirm('是否确认删除应用编号为"' + BackupIds + '"的数据项？').then(function () {
+      return delBackup(BackupIds);
    }).then(() => {
       getList();
       proxy.$modal.msgSuccess("删除成功");
@@ -229,7 +228,7 @@ function reset() {
    form.value = {
       id: undefined,
       deptId: undefined,
-      StorageName: undefined,
+      BackupName: undefined,
       nickName: undefined,
       password: undefined,
       phonenumber: undefined,
@@ -254,8 +253,8 @@ function handleAdd() {
 /** 修改按钮操作 */
 function handleUpdate(row) {
    reset();
-   const StorageId = row.id || ids.value;
-   getStorage(StorageId).then(response => {
+   const BackupId = row.id || ids.value;
+   getBackup(BackupId).then(response => {
       form.value = response.data;
       open.value = true;
       title.value = "修改应用";
@@ -266,14 +265,14 @@ function handleUpdate(row) {
 function submitForm() {
    proxy.$refs["databaseRef"].validate(valid => {
       if (valid) {
-         if (form.value.StorageId != undefined) {
-            updateStorage(form.value).then(response => {
+         if (form.value.BackupId != undefined) {
+            updateBackup(form.value).then(response => {
                proxy.$modal.msgSuccess("修改成功");
                open.value = false;
                getList();
             });
          } else {
-            addStorage(form.value).then(response => {
+            addBackup(form.value).then(response => {
                proxy.$modal.msgSuccess("新增成功");
                open.value = false;
                getList();
