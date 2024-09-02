@@ -46,9 +46,12 @@
                <el-table-column label="应用描述" align="left" key="projectDesc" prop="projectDesc" v-if="columns[1].visible" />
                <el-table-column label="应用代码" align="center" width="200" key="projectCode" prop="projectCode" v-if="columns[2].visible" :show-overflow-tooltip="true" />
 
-               <el-table-column label="配置文档" align="center" width="200" key="documentType" prop="documentType" v-if="columns[1].visible" :show-overflow-tooltip="true" >
+               <el-table-column label="配置权限" align="center" width="200" key="documentType" prop="documentType" v-if="columns[1].visible" :show-overflow-tooltip="true" >
                   <template #default="scope">
-                     <el-button type="primary" bg text @click="handleConfigType(scope.row.id , scope.row.documentType)"> <i class="fa-solid fa-link"></i> 配置文档 </el-button>
+                     <el-button type="primary" bg text 
+                        @click="handleConfigType(scope.row.id , scope.row.documentType)"> 
+                        <i class="fa-solid fa-link"></i> 配置文档 
+                     </el-button>
                   </template>
                </el-table-column>
 
@@ -199,7 +202,7 @@
       <!-- 文档列表 -->
       <el-dialog :title="title" v-model="openDocumentTypeDialog" width="1024px" append-to-body>
 
-         <TypeList />
+         <TypeList ref="typeListRef" :selectedRowKeys="selectedRowKeys" />
 
          <template #footer>
             <div class="dialog-footer">
@@ -220,6 +223,7 @@ import {
    getProject,
    updateProject,
    addProject,
+   updateDocumentType,
    changStatusField
 } from "@/api/base/storage/project";
 
@@ -239,6 +243,11 @@ const multiple = ref(true);
 const total = ref(0);
 const title = ref("");
 const dateRange = ref([]);
+
+// 配置文档列表
+const currentProjectId = ref(null)
+const typeListRef = ref(null)
+const selectedRowKeys = ref(null)
 
 // 是否打开配置文档
 const openDocumentTypeDialog = ref(false);
@@ -378,6 +387,8 @@ function submitForm() {
 /** 配置文档类型 */
 function handleConfigType(id , documentType){
    openDocumentTypeDialog.value = true ;
+   selectedRowKeys.value = documentType;
+   currentProjectId.value = id
 }
 
 /** 修改状态 */
@@ -396,7 +407,13 @@ const handleChangStatusField = async(field , value , id) => {
 
 /** 提交配置文档类型 */
 function submitDocumentTypeForm(){
-   // TODO 待保存应用文档类型
+   let ids = typeListRef.value.handleSelectRow()
+   console.log("ids = " + ids)
+   updateDocumentType(ids , currentProjectId.value).then(response => {
+      proxy.$modal.msgSuccess("修改成功");
+      openDocumentTypeDialog.value = false;
+      getList();
+   });
 }
 
 getList();
