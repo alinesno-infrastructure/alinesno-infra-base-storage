@@ -21,8 +21,22 @@ var managerUrl = {
     removeUrl: prefix + "delete" ,
     exportUrl: prefix + "exportExcel",
     changeField: prefix + "changeField",
+    updateDocumentType: prefix + "updateDocumentType",
     defaultProject: prefix + "defaultProject",
     downloadfile: prefix + "downloadfile"
+}
+
+// 更新项目文档类型
+export function updateDocumentType(ids , projectId){
+  var data = {
+    documentIds: ids,
+    projectId: projectId
+  }
+  return request({
+    url: managerUrl.updateDocumentType,
+    method: 'post',
+    data: data
+  })
 }
 
 // 获取默认应用
