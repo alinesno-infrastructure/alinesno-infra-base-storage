@@ -3,11 +3,10 @@ package com.alinesno.infra.base.storage.api.provider;
 import com.alinesno.infra.base.storage.api.aspect.Intercepted;
 import com.alinesno.infra.base.storage.plugins.IParentFileStorageService;
 import com.alinesno.infra.common.facade.response.AjaxResult;
+import io.jsonwebtoken.lang.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -30,8 +29,8 @@ public class StorageUploadController {
      * @param storageId 存储ID
      * @return AjaxResult 包含删除结果
      */
-    @PostMapping("/delete")
-    public AjaxResult delete(String storageId) {
+    @DeleteMapping("/delete")
+    public AjaxResult delete(@RequestParam String storageId) {
         boolean delete = fileStorageService.delete(storageId);
         return AjaxResult.success(delete);
     }
@@ -42,8 +41,8 @@ public class StorageUploadController {
      * @param storageId 存储ID
      * @return AjaxResult 包含文件存在结果
      */
-    @PostMapping("/exists")
-    public AjaxResult exists(String storageId) {
+    @GetMapping("/exists")
+    public AjaxResult exists(@RequestParam String storageId) {
         boolean exists = fileStorageService.exists(storageId);
         return AjaxResult.success(exists);
     }
@@ -56,7 +55,11 @@ public class StorageUploadController {
      */
     @Intercepted
     @PostMapping("/upload")
-    public AjaxResult upload(MultipartFile file , String platform) {
+    public AjaxResult upload(@RequestParam("file")  MultipartFile file ,
+                             @RequestParam String platform) {
+
+        Assert.isTrue(!file.isEmpty(), "上传文件为空");
+
         return fileStorageService.upload(file , platform);
     }
 
@@ -81,7 +84,8 @@ public class StorageUploadController {
      */
     @Intercepted
     @PostMapping("/uploadImage")
-    public AjaxResult uploadImage(MultipartFile file , String platform) {
+    public AjaxResult uploadImage(@RequestParam("file")  MultipartFile file ,
+                                  @RequestParam String platform) {
         return fileStorageService.uploadImage(file , platform);
     }
 
@@ -93,7 +97,8 @@ public class StorageUploadController {
      */
     @Intercepted
     @PostMapping("/uploadPlatform")
-    public AjaxResult uploadPlatform(MultipartFile file , String platform) {
+    public AjaxResult uploadPlatform(@RequestParam("file")  MultipartFile file ,
+                                     @RequestParam String platform) {
         return fileStorageService.uploadPlatform(file , platform);
     }
 }
