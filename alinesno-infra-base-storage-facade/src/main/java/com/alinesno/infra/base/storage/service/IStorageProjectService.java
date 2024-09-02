@@ -1,5 +1,6 @@
 package com.alinesno.infra.base.storage.service;
 
+import com.alinesno.infra.base.storage.api.UpdateDocumentTypeDto;
 import com.alinesno.infra.base.storage.entity.StorageProjectEntity;
 import com.alinesno.infra.common.facade.services.IBaseService;
 
@@ -17,4 +18,10 @@ public interface IStorageProjectService extends IBaseService<StorageProjectEntit
      */
     void initDefaultApp(long userId);
 
+    /**
+     * 更新文档类型
+     * @param dto
+     * @return
+     */
+    int updateDocumentType(UpdateDocumentTypeDto dto);
 }
