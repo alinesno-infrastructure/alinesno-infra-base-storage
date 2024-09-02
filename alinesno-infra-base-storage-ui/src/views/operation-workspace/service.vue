@@ -10,54 +10,18 @@
           </div>
           <div class="panel-body acp-height-auto">
         <div class="box-header">
-          <el-row>
-            <el-col :span="4">
-              <div class="item-box">
-                <ul>
-                  <li
-                    class="item-box-info"
-                    :class="index === 0 ? 'active' : ''"
-                    v-for="(item, index) in resources"
-                    :key="index"
-                  >
-                    <div class="item-status">
-                      <div
-                        class="server-desc"
-                        style="margin-top: 10px; margin-left: 10px"
-                      >
-                        <i :class="item.icon"></i>
-                      </div>
-                    </div>
-                    <div class="status-info">
-                      <div class="item-text">{{ item.title }}</div>
-                      <div class="item-num">
-                        {{ item.usage }}
-                        <span class="total-num">{{ item.total }}</span>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-            </el-col>
-            <el-col :span="20">
               <div class="sidecard-bar">
-                <div
-                  id="echarts-bar2-chart"
-                  :style="{ width: '100%', height: '250px' }"
-                ></div>
+                <div id="echarts-bar2-chart" :style="{ width: '100%', height: '250px' }"></div>
               </div>
-            </el-col>
-          </el-row>
         </div>
           </div>
         </div>
-
       </el-col>
 
       <el-col :span="5">
         <div class="grid-content">
           <div class="panel-header">
-            <div class="header-title"><i class="fa-solid fa-user-nurse"></i> 接口调用统计</div>
+            <div class="header-title"><i class="fa-solid fa-user-nurse"></i> 存储服务概览</div>
           </div>
           <div class="panel-body acp-height-auto">
             <ul class="panel-item-text">
@@ -84,53 +48,12 @@ import * as echarts from "echarts";
 const echart = echarts;
 
 const opertionAssets = ref([
-  {id:'1' , title:'应用管理' , count:45} ,
-  {id:'2' , title:'当前渠道' , count:145} ,
+  {id:'1' , title:'文档存储量' , count:45} ,
+  {id:'2' , title:'存储渠道' , count:145} ,
   {id:'3' , title:'数据存储量' , count:65} ,
   {id:'4' , title:'文件类型' , count:85} ,
-  {id:'5' , title:'接口请求次数' , count:45} ,
+  {id:'5' , title:'接口请求数' , count:45} ,
 ])
-
-const resources = ref([
-        {
-          icon: "fas fa-microchip",
-          title: "CPU core",
-          total: "4",
-          usage: "0.64",
-          usagePre: "12%",
-        },
-        {
-          icon: "fas fa-memory",
-          title: "内存 Gi",
-          total: "7.68",
-          usage: "4.81",
-          usagePre: "12%",
-        },
-        {
-          icon: "fas fa-hdd",
-          title: "磁盘 GB",
-          total: "21.57",
-          usage: "207.71",
-          usagePre: "12%",
-        },
-        {
-          icon: "fab fa-docker",
-          title: "容器组",
-          total: "220",
-          usage: "28",
-          usagePre: "12%",
-        },
-      ]) ; 
-
-const apps = ref([
-  {icon:'https://d1by4p17n947rt.cloudfront.net/icon/d88319dfa5d204f019b4284149886c59-7d586ea82f792b61a8c87de60565133d.svg' , name:'自动化操作服务' , desc:'With Route 53 (3 分钟)'},
-  {icon:'https://d1by4p17n947rt.cloudfront.net/icon/9da5a168cf8194c8ee5ed192a443d563-674375b53bc8ae94f48cfdb5c81e8363.svg' , name:'分布式配置中心' , desc:'With Route 53 (3 分钟)'},
-  {icon:'https://d1by4p17n947rt.cloudfront.net/icon/a5ffe5487f62ef75d8e5cf78c18525a5-d4867f9d4adcd749f0c5aff987232847.svg' , name:'审计日志服务' , desc:'With Route 53 (3 分钟)'},
-  {icon:'https://d1by4p17n947rt.cloudfront.net/icon/6e9e16955bd76c1d3a9996e0d6d3ad15-04cfc8c62f597690680d948b366980cf.svg' , name:'持续集成服务' , desc:'With Route 53 (3 分钟)'},
-  {icon:'https://d1by4p17n947rt.cloudfront.net/icon/d88319dfa5d204f019b4284149886c59-7d586ea82f792b61a8c87de60565133d.svg' , name:'容器云管理服务' , desc:'With EC2 (2 分钟)'},
-  {icon:'https://d1by4p17n947rt.cloudfront.net/icon/3da5e8169d2f1426f99fbef54575fe96-6382cb2dfdd2f74c99bc8a64a338358e.svg' , name:'一体化安全感触服务' , desc:'With Route 53 (3 分钟)'},
-]);
-
 
 function drawBar2() {
       let barChart = echart.init(
