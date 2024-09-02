@@ -1,6 +1,7 @@
 package com.alinesno.infra.base.storage.plugins.aspect;
 
 import cn.hutool.core.util.ArrayUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.dromara.x.file.storage.core.FileInfo;
 import org.dromara.x.file.storage.core.UploadPretreatment;
 import org.dromara.x.file.storage.core.aspect.*;
@@ -20,10 +21,9 @@ import java.util.function.Consumer;
  * @author luoxiaodong
  * @version 1.0.0
  */
+@Slf4j
 @Component
 public class LogFileStorageAspect implements FileStorageAspect {
-
-    private static final Logger log = LoggerFactory.getLogger(LogFileStorageAspect.class) ;
 
     /**
      * 上传，成功返回文件信息，失败返回 null
