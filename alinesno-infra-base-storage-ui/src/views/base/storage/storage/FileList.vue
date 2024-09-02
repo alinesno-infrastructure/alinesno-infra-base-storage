@@ -1,281 +1,388 @@
 <template>
-  <div class="">
+   <div>
+      <el-row :gutter="20">
+         <!--类型数据-->
+         <el-col :span="4" :xs="24">
+            <div class="head-container">
+               <el-input
+                  v-model="deptName"
+                  placeholder="请输入类型名称"
+                  clearable
+                  prefix-icon="Search"
+                  style="margin-bottom: 20px"
+               />
+            </div>
+            <div class="head-container">
+               <el-tree
+                  :data="deptOptions"
+                  :props="{ label: 'label', children: 'children' }"
+                  :expand-on-click-node="false"
+                  :filter-node-method="filterNode"
+                  ref="deptTreeRef"
+                  node-key="id"
+                  highlight-current
+                  default-expand-all
+                  @node-click="handleNodeClick"
+               />
+            </div>
+         </el-col>
 
-    <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px" style="float:right;">
-      <el-form-item label="文件名称" prop="title">
-        <el-input
-            v-model="fileName"
-            placeholder="请输入文件名称"
-            clearable
-            style="width: 240px;"
-            @keyup.enter="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
-        <el-button icon="Refresh" @click="resetQuery">重置</el-button>
-      </el-form-item>
-    </el-form>
+         <!--指令数据-->
+         <el-col :span="20" :xs="24">
+            <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="100px">
+               <el-form-item label="指令名称" prop="originalFilename">
+                  <el-input v-model="queryParams.originalFilename" placeholder="请输入指令名称" clearable style="width: 240px" @keyup.enter="handleQuery" />
+               </el-form-item>
+               <el-form-item label="指令名称" prop="originalFilename">
+                  <el-input v-model="queryParams['condition[originalFilename|like]']" placeholder="请输入指令名称" clearable style="width: 240px" @keyup.enter="handleQuery" />
+               </el-form-item>
+               <el-form-item>
+                  <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
+                  <el-button icon="Refresh" @click="resetQuery">重置</el-button>
+               </el-form-item>
+            </el-form>
 
-    <el-row :gutter="10" class="mb10">
-      <el-col :span="1.5">
-        <el-upload
-            :action=uploadUrl
-            :limit="1"
-            :headers="headers"
-            :show-file-list="false"
-            :on-success="successUpload"
-        >
-          <template #trigger>
-            <el-button type="primary" plain>
-              <el-icon>
-                <Upload></Upload>
-              </el-icon>
-              <span>上传</span>
-            </el-button>
-          </template>
-        </el-upload>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-            type="danger"
-            plain
-            icon="Delete"
-            :disabled="multiple"
-            @click="handleDelete"
-        >删除
-        </el-button>
-      </el-col>
-    </el-row>
+            <el-row :gutter="10" class="mb8">
 
-    <el-table ref="operlogRef" v-loading="loading" :data="operlogList" @selection-change="handleSelectionChange" :default-sort="defaultSort" @sort-change="handleSortChange">
-      <el-table-column type="selection" width="55" align="center"/>
-      <el-table-column width="60">
-        <template #default="scope">
-          <img
-              :src="getAssetsFile(scope.row.type)"
-              style="width: 30px; max-height: 30px;"/>
-        </template>
-      </el-table-column>
-      <el-table-column label="文件名称" align="left" prop="name">
-        <template #default="scope">
-          <span>{{ scope.row.name }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="文件类型" align="left" prop="type">
-        <template #default="scope">
-          <span>{{ scope.row.type }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="大小" align="left" prop="size">
-        <template #default="scope">
-          <span>{{ scope.row.size }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="添加日期" align="center" prop="date" sortable="custom" :sort-orders="['descending', 'ascending']">
-        <template #default="scope">
-          <span>{{ parseTime(scope.row.date) }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width">
-        <template #default="scope">
-          <el-button
-              type="text"
-              icon="Download"
-              @click="handleDownLoad(scope.row)"
-          >下载
-          </el-button>
-          <el-button
-              type="text"
-              icon="Share"
-              @click="handleShare(scope.row)"
-          >分享
-          </el-button>
-          <el-button
-              type="text"
-              icon="Delete"
-              @click="handleDelete(scope.row)"
-          >删除
-          </el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+               <el-col :span="1.5">
+                  <el-button type="primary" plain icon="Plus" @click="handleAdd">新增</el-button>
+               </el-col>
+               <el-col :span="1.5">
+                  <el-button type="danger" plain icon="Delete" :disabled="multiple" @click="handleDelete">删除</el-button>
+               </el-col>
 
-  </div>
+               <right-toolbar v-model:showSearch="showSearch" @queryTable="getList" :columns="columns"></right-toolbar>
+            </el-row>
+
+            <el-table v-loading="loading" :data="StorageList" @selection-change="handleSelectionChange">
+               <el-table-column type="selection" width="50" :align="'center'" />
+
+               <el-table-column label="图标" align="center" width="60" key="format" prop="format" v-if="columns[5].visible">
+                  <template #default="scope">
+                     <!-- <span style="font-size:25px;color:#3b5998">
+                        <i :class="scope.row.icon" />
+                     </span> -->
+                     <img :src="'http://data.linesno.com/icons/fileType/' + scope.row.icon" style="width:35px;" />
+                  </template>
+               </el-table-column>
+
+               <!-- 业务字段-->
+               <el-table-column label="文件名" align="left" key="originalFilename" prop="originalFilename" v-if="columns[0].visible">
+                  <template #default="scope">
+                     <div>
+                        {{ scope.row.originalFilename }}
+                     </div>
+                     <div style="font-size: 13px;color: #a5a5a5;cursor: pointer;" v-copyText="scope.row.id">
+                        标识: {{ scope.row.id }} <el-icon><CopyDocument /></el-icon>
+                     </div>
+                  </template>
+               </el-table-column>
+               <el-table-column label="文件大小" align="center" width="100" key="size" prop="size" v-if="columns[2].visible" :show-overflow-tooltip="true">
+                  <template #default="scope">
+                     {{ formatFileSize(scope.row.size) }}
+                  </template>
+               </el-table-column>
+               <el-table-column label="文件存储" align="center" width="150" key="platform" prop="platform" v-if="columns[2].visible" :show-overflow-tooltip="true">
+                  <template #default="scope">
+                     <el-button v-if="scope.row.platform === 'minio'" type="primary" text bg @click="configStorage(scope.row)">
+                      <i class="fa-solid fa-hard-drive" style="margin-right:5px;"></i> Minio存储
+                    </el-button>
+                     <el-button v-if="scope.row.platform === 'qiniu-kodo'" type="danger" text bg @click="configStorage(scope.row)">
+                      <i class="fa-solid fa-box-archive" style="margin-right:5px"></i> 七牛云存储 
+                    </el-button>
+                  </template>
+               </el-table-column>
+               <el-table-column label="存储类型" align="center" width="200" key="contentType" prop="contentType" v-if="columns[3].visible" :show-overflow-tooltip="true" />
+
+               <el-table-column label="上传时间" align="center" prop="createTime" v-if="columns[6].visible" width="160">
+                  <template #default="scope">
+                     <span>{{ parseTime(scope.row.createTime) }}</span>
+                  </template>
+               </el-table-column>
+
+               <!-- 操作字段  -->
+               <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
+                  <template #default="scope">
+                     <el-tooltip content="下载" placement="top" v-if="scope.row.StorageId !== 1">
+                        <el-button link type="primary" icon="Download" @click="handleOpenLink(scope.row)"  v-hasPermi="['system:Storage:edit']"></el-button>
+                     </el-tooltip>
+                     <el-tooltip content="打开" placement="top" v-if="scope.row.StorageId !== 1">
+                        <el-button link type="primary" icon="Link" @click="handleOpenLink(scope.row)"  v-hasPermi="['system:Storage:edit']"></el-button>
+                     </el-tooltip>
+                     <el-tooltip content="删除" placement="top" v-if="scope.row.StorageId !== 1">
+                        <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['system:Storage:remove']"></el-button>
+                     </el-tooltip>
+                  </template>
+
+               </el-table-column>
+            </el-table>
+            <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize" @pagination="getList" />
+         </el-col>
+      </el-row>
+
+      <!-- 添加或修改指令配置对话框 -->
+      <el-dialog :title="promptTitle" v-model="promptOpen" width="1024" destroy-on-close append-to-body>
+
+         <StorageEditor :currentPostId="currentPostId" :currentStorageContent="currentStorageContent" />
+
+      </el-dialog>
+
+      <!-- 添加或修改指令配置对话框 -->
+      <el-dialog :title="title" v-model="open" width="900px" append-to-body>
+         <el-form :model="form" :rules="rules" ref="databaseRef" label-width="100px">
+            <el-row>
+               <el-col :span="24">
+                  <el-form-item style="width: 100%;" label="类型" prop="promptType">
+                     <el-tree-select
+                        v-model="form.promptType"
+                        :data="deptOptions"
+                        :props="{ value: 'id', label: 'label', children: 'children' }"
+                        value-key="id"
+                        placeholder="请选择归属类型"
+                        check-strictly
+                     />
+                  </el-form-item>
+               </el-col>
+            </el-row>
+            <el-row>
+               <el-col :span="24">
+                  <el-form-item label="名称" prop="originalFilename">
+                     <el-input v-model="form.originalFilename" placeholder="请输入指令名称" maxlength="50" />
+                  </el-form-item>
+               </el-col>
+            </el-row>
+            <el-row>
+               <el-col :span="24">
+                  <el-form-item label="数据来源" prop="dataSourceApi">
+                     <el-input v-model="form.dataSourceApi" placeholder="请输入dataSourceApi数据来源" maxlength="128" />
+                  </el-form-item>
+               </el-col>
+            </el-row>
+
+            <el-row>
+               <el-col :span="24">
+                  <el-form-item label="备注" prop="promptDesc">
+                     <el-input v-model="form.promptDesc" placeholder="请输入指令备注"></el-input>
+                  </el-form-item>
+               </el-col>
+            </el-row>
+         </el-form>
+         <template #footer>
+            <div class="dialog-footer">
+               <el-button type="primary" @click="submitForm">确 定</el-button>
+               <el-button @click="cancel">取 消</el-button>
+            </div>
+         </template>
+      </el-dialog>
+
+   </div>
 </template>
 
-<script setup>
+<script setup name="Storage">
+
 import {
-  listStorage,
-  delStorage,
-  getStorage,
-  updateStorage,
-  catalogTreeSelect,
-  addStorage,
-  downloadFile,
+   listStorage,
+   delStorage,
+   getStorage,
+   updateStorage,
+   catalogTreeSelect,
+   addStorage
 } from "@/api/base/storage/storage";
-import {computed, getCurrentInstance, onMounted, reactive, ref, toRefs, watch} from "vue";
-import {ElMessage} from "element-plus";
-import {Upload} from "@element-plus/icons-vue";
-import {useRoute} from "vue-router"
 
+// import StorageEditor from "./editor.vue"
 
-const {proxy} = getCurrentInstance();
-const route = useRoute()
-const operlogList = ref([]);
-const loading = ref(false);
+const router = useRouter();
+const { proxy } = getCurrentInstance();
+
+// 定义变量
+const StorageList = ref([]);
+const open = ref(false);
+
+const promptTitle = ref("");
+const currentPostId = ref("");
+const currentStorageContent = ref([]);
+const promptOpen = ref(false);
+
+const loading = ref(true);
 const showSearch = ref(true);
 const ids = ref([]);
+const single = ref(true);
 const multiple = ref(true);
 const total = ref(0);
 const title = ref("");
 const dateRange = ref([]);
-const defaultSort = ref({prop: "operTime", order: "descending"});
+const deptOptions = ref(undefined);
+const postOptions = ref([]);
+const roleOptions = ref([]);
+
+// 列显隐信息
+const columns = ref([
+   { key: 0, label: `指令名称`, visible: true },
+   { key: 1, label: `指令描述`, visible: true },
+   { key: 2, label: `表数据量`, visible: true },
+   { key: 3, label: `类型`, visible: true },
+   { key: 4, label: `指令地址`, visible: true },
+   { key: 5, label: `状态`, visible: true },
+   { key: 6, label: `更新时间`, visible: true }
+]);
 
 const data = reactive({
-  queryParams: {
-    pageNum: 1,
-    pageSize: 10,
-    title: undefined,
-    operName: undefined,
-    businessType: undefined,
-    status: undefined
-  }
+   form: {},
+   queryParams: {
+      pageNum: 1,
+      pageSize: 10,
+      originalFilename: undefined,
+      promptDesc: undefined,
+      catalogId: undefined
+   },
+   rules: {
+      originalFilename: [{ required: true, message: "名称不能为空", trigger: "blur" }] ,
+      dataSourceApi: [{ required: true, message: "连接不能为空", trigger: "blur" }],
+      promptType: [{ required: true, message: "类型不能为空", trigger: "blur" }] ,
+      promptDesc: [{ required: true, message: "备注不能为空", trigger: "blur" }]
+   }
 });
 
-const {queryParams} = toRefs(data);
+const { queryParams, form, rules } = toRefs(data);
 
-// const headers = ref({
-//   'token': token
-// })
-
-let baseUrl = '';
-switch (process.env.NODE_ENV) {
-  case 'development':
-    baseUrl = "http://localhost:30105"  //开发环境url
-    break
-  case 'production':
-    baseUrl = "http://http://alinesno-infra-base-storage-ui.beta.base.infra.linesno.com/:30105"   //生产环境url
-    break
-}
-const uploadUrl = ref(baseUrl + '/api/infra/base/storage/upload')
-
-const fileType = computed(() => route.query.fileType ? Number(route.query.fileType) : 0)
-const fileTypeList = ref({ // 菜单 index 和名称 Map
-  0: 'all',
-  1: 'image',
-  2: 'document',
-  3: 'video',
-  4: 'music',
-  5: 'other',
-})
-let sideType = ref(fileTypeList.value[Number(fileType.value)])
-const parentId = ref(0)
-const fileName = ref('')
-
-
-// onMounted(() => {
-//   getList()
-// })
-
-watch(fileType, (newValue) => {
-  sideType = ref(fileTypeList.value[Number(newValue)])
-  getList()
-})
-
-// 文件上传成功钩子
-function successUpload() {
-  ElMessage.success("上传成功")
-  getList();
+function formatFileSize(bytes) {
+    if (bytes === 0) return '0 B';
+    const k = 1024;
+    const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return (bytes / Math.pow(k, i)).toFixed(2) + ' ' + sizes[i];
 }
 
-// 文件图标
-function getAssetsFile(type) {
-  return new URL('/images/file_'+type+'.png', import.meta.url).href
-}
-
-
-/** 查询文件 */
+/** 查询指令列表 */
 function getList() {
-  loading.value = true;
-  let query = {'sideType': sideType.value, 'parentId': parentId.value, 'fileName': fileName.value}
-  listStorage(query).then(response => {
-    operlogList.value = response.data;
-    total.value = response.total;
-    loading.value = false;
-  });
+   loading.value = true;
+   listStorage(proxy.addDateRange(queryParams.value, dateRange.value)).then(res => {
+      loading.value = false;
+      StorageList.value = res.rows;
+      total.value = res.total;
+   });
+};
+
+// 节点单击事件
+function handleNodeClick(data) {
+   queryParams.value.catalogId = data.id;
+   console.log('data.id = ' + data.id)
+   getList();
 }
 
 /** 搜索按钮操作 */
 function handleQuery() {
-  queryParams.value.pageNum = 1;
-  getList();
-}
+   queryParams.value.pageNum = 1;
+   getList();
+};
 
 /** 重置按钮操作 */
 function resetQuery() {
-  fileName.value = ''
-  handleQuery();
-}
+   dateRange.value = [];
+   proxy.resetForm("queryRef");
 
-/** 多选框选中数据 */
-function handleSelectionChange(selection) {
-  ids.value = selection.map(item => item.id);
-  multiple.value = !selection.length;
-}
+   queryParams.value.catalogId = undefined;
 
-/** 排序触发事件 */
-function handleSortChange(column, prop, order) {
-  queryParams.value.orderByColumn = column.prop;
-  queryParams.value.isAsc = column.order;
-  getList();
-}
-
+   proxy.$refs.deptTreeRef.setCurrentKey(null);
+   handleQuery();
+};
 /** 删除按钮操作 */
 function handleDelete(row) {
-  loading.value = true;
-  delStorage(row).then(response => {
-    ElMessage.success("删除成功")
-    getList();
-    loading.value = false;
+   const StorageIds = row.id || ids.value;
+   proxy.$modal.confirm('是否确认删除指令编号为"' + StorageIds + '"的数据项？').then(function () {
+      return delStorage(StorageIds);
+   }).then(() => {
+      getList();
+      proxy.$modal.msgSuccess("删除成功");
+   }).catch(() => { });
+};
+
+/** 选择条数  */
+function handleSelectionChange(selection) {
+   ids.value = selection.map(item => item.id);
+   single.value = selection.length != 1;
+   multiple.value = !selection.length;
+};
+
+/** 查询类型下拉树结构 */
+function getDeptTree() {
+  catalogTreeSelect().then(response => {
+    deptOptions.value = response.data;
   });
+};
+
+/** 配置Storage */
+function configStorage(row){
+   promptTitle.value = "配置角色Storage";
+   promptOpen.value = true ;
+   currentPostId.value = row.id;
+
+   if(row.contentType){
+      currentStorageContent.value = JSON.parse(row.contentType);
+   }
 }
 
-/** 下载按钮操作 */
-async function handleDownLoad(row) {
-  downloadFile(row).then(response => {
-    if (response) {
-      let fileName = row.originalName
-      let url = window.URL.createObjectURL(new Blob([response.data]));
-      let link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', fileName);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      ElMessage.success('下载成功')
-    } else {
-      console.error('下载失败，响应状态码：', response.status);
-      ElMessage.error('下载失败')
-    }
-  });
-}
+/** 重置操作表单 */
+function reset() {
+   form.value = {
+      id: undefined,
+      deptId: undefined,
+      StorageName: undefined,
+      nickName: undefined,
+      password: undefined,
+      phonenumber: undefined,
+      status: "0",
+      remark: undefined,
+   };
+   proxy.resetForm("databaseRef");
+};
+/** 取消按钮 */
+function cancel() {
+   open.value = false;
+   promptOpen.value = false ;
+   reset();
+};
 
-/** 分享按钮操作 */
-async function handleShare(row) {
+/** 新增按钮操作 */
+function handleAdd() {
+   reset();
+   open.value = true;
+   title.value = "添加指令";
+};
 
-}
+/** 修改按钮操作 */
+function handleUpdate(row) {
+   reset();
+   const StorageId = row.id || ids.value;
+   getStorage(StorageId).then(response => {
+      form.value = response.data;
+      open.value = true;
+      title.value = "修改指令";
+   });
+};
+
+/** 提交按钮 */
+function submitForm() {
+   proxy.$refs["databaseRef"].validate(valid => {
+      if (valid) {
+         if (form.value.id != undefined) {
+            updateStorage(form.value).then(response => {
+               proxy.$modal.msgSuccess("修改成功");
+               open.value = false;
+               getList();
+            });
+         } else {
+            addStorage(form.value).then(response => {
+               proxy.$modal.msgSuccess("新增成功");
+               open.value = false;
+               getList();
+            });
+         }
+      }
+   });
+};
+
+getDeptTree();
+getList();
 
 </script>
-
-<style>
-
-.mb10 {
-  margin-bottom: 10px;
-}
-
-.app-container {
-  margin-top: 12px;
-}
-
-</style>
