@@ -51,11 +51,11 @@ public class DocumentTypeController extends BaseController<DocumentTypeEntity, I
         log.debug("page = {}", ToStringBuilder.reflectionToString(page));
 
         long userId = CurrentAccountJwt.getUserId();
-        long countGitRepository = service.count(new LambdaQueryWrapper<DocumentTypeEntity>().eq(DocumentTypeEntity::getOperatorId , userId));
+        long count = service.count(new LambdaQueryWrapper<DocumentTypeEntity>().eq(DocumentTypeEntity::getOperatorId , userId));
 
         // 初始化用户仓库
-        if (countGitRepository == 0) {
-            service.initDocumentType(CurrentAccountJwt.getUserId());
+        if (count == 0) {
+            service.initDocumentType(userId);
         }
 
         return this.toPage(model, this.getFeign(), page);
