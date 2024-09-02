@@ -3,10 +3,10 @@ package com.alinesno.infra.base.storage.entity;
 import com.alinesno.infra.common.facade.mapper.entity.InfraBaseEntity;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
 import com.gitee.sunchenbin.mybatis.actable.annotation.ColumnComment;
 import com.gitee.sunchenbin.mybatis.actable.annotation.ColumnType;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 /**
@@ -57,6 +57,11 @@ public class DocumentTypeEntity extends InfraBaseEntity {
     @ColumnComment("请求次数")
     @TableField
     private Integer requestCount;
+
+    @ColumnType(length = 128)
+    @ColumnComment("文件格式类型")
+    @TableField
+    private String fileType ;
 
     /**
      * 是否限流
