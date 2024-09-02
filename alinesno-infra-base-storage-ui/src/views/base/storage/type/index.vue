@@ -35,7 +35,7 @@
 
             <el-table v-loading="loading" :data="TypeList" @selection-change="handleSelectionChange">
                <el-table-column type="index" width="50" align="center" />
-               <el-table-column label="图标" align="center" width="70" key="icon" v-if="columns[5].visible">
+               <el-table-column label="图标" align="center" width="60" key="icon" v-if="columns[5].visible">
                   <template #default="scope">
                      <span style="font-size:25px;color:#3b5998">
                         <i :class="scope.row.icon" />
@@ -44,7 +44,7 @@
                </el-table-column>
 
                <!-- 业务字段-->
-               <el-table-column label="类型名称" align="center" width="150" key="typeName" prop="typeName" v-if="columns[0].visible" />
+               <el-table-column label="类型名称" align="center" width="100" key="typeName" prop="typeName" v-if="columns[0].visible" />
                <el-table-column label="类型描述" align="left" key="typeDesc" prop="typeDesc" v-if="columns[0].visible" />
                <el-table-column label="是否开启" align="center" width="200" key="isOpen" prop="isOpen" v-if="columns[1].visible" :show-overflow-tooltip="true" >
                   <template #default="scope">
