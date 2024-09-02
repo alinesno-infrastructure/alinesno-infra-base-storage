@@ -1,14 +1,14 @@
 <template>
    <div class="app-container">
       <el-row :gutter="20">
-         <!--应用数据-->
+         <!--渠道数据-->
          <el-col :span="24" :xs="24">
             <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="100px">
-               <el-form-item label="应用名称" prop="dbName">
-                  <el-input v-model="queryParams.dbName" placeholder="请输入应用名称" clearable style="width: 240px" @keyup.enter="handleQuery" />
+               <el-form-item label="渠道名称" prop="dbName">
+                  <el-input v-model="queryParams.dbName" placeholder="请输入渠道名称" clearable style="width: 240px" @keyup.enter="handleQuery" />
                </el-form-item>
-               <el-form-item label="应用名称" prop="dbName">
-                  <el-input v-model="queryParams['condition[dbName|like]']" placeholder="请输入应用名称" clearable style="width: 240px" @keyup.enter="handleQuery" />
+               <el-form-item label="渠道名称" prop="dbName">
+                  <el-input v-model="queryParams['condition[dbName|like]']" placeholder="请输入渠道名称" clearable style="width: 240px" @keyup.enter="handleQuery" />
                </el-form-item>
                <el-form-item>
                   <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
@@ -37,11 +37,10 @@
                </el-table-column>
 
                <!-- 业务字段-->
-               <el-table-column label="应用名称" align="center" key="dbName" prop="dbName" v-if="columns[0].visible" />
-               <el-table-column label="应用描述" align="center" key="dbDesc" prop="dbDesc" v-if="columns[1].visible" :show-overflow-tooltip="true" />
-               <el-table-column label="表数据量" align="center" key="nickName" prop="nickName" v-if="columns[2].visible" :show-overflow-tooltip="true" />
+               <el-table-column label="渠道名称" align="center" key="dbName" prop="dbName" v-if="columns[0].visible" />
+               <el-table-column label="渠道描述" align="center" key="dbDesc" prop="dbDesc" v-if="columns[1].visible" :show-overflow-tooltip="true" />
                <el-table-column label="类型" align="center" key="dbType" prop="dbType" v-if="columns[3].visible" :show-overflow-tooltip="true" />
-               <el-table-column label="应用地址" align="center" key="jdbcUrl" prop="jdbcUrl" v-if="columns[4].visible" width="120" />
+               <el-table-column label="参数配置" align="center" key="nickName" prop="nickName" v-if="columns[2].visible" :show-overflow-tooltip="true" />
                <el-table-column label="状态" align="center" key="hasStatus" v-if="columns[5].visible" />
 
                <el-table-column label="添加时间" align="center" prop="addTime" v-if="columns[6].visible" width="160">
@@ -69,13 +68,13 @@
          </el-col>
       </el-row>
 
-      <!-- 添加或修改应用配置对话框 -->
+      <!-- 添加或修改渠道配置对话框 -->
       <el-dialog :title="title" v-model="open" width="900px" append-to-body>
          <el-form :model="form" :rules="rules" ref="databaseRef" label-width="100px">
             <el-row>
                <el-col :span="24">
                   <el-form-item label="名称" prop="dbName">
-                     <el-input v-model="form.dbName" placeholder="请输入应用名称" maxlength="50" />
+                     <el-input v-model="form.dbName" placeholder="请输入渠道名称" maxlength="50" />
                   </el-form-item>
                </el-col>
             </el-row>
@@ -99,7 +98,7 @@
                </el-col>
                <el-col :span="24">
                   <el-form-item label="密码" prop="dbPasswd">
-                     <el-input v-model="form.dbPasswd" placeholder="请输入应用密码" type="password" maxlength="30" show-password />
+                     <el-input v-model="form.dbPasswd" placeholder="请输入渠道密码" type="password" maxlength="30" show-password />
                   </el-form-item>
                </el-col>
             </el-row>
@@ -107,7 +106,7 @@
             <el-row>
                <el-col :span="24">
                   <el-form-item label="备注" prop="dbDesc">
-                     <el-input v-model="form.dbDesc" placeholder="请输入应用备注"></el-input>
+                     <el-input v-model="form.dbDesc" placeholder="请输入渠道备注"></el-input>
                   </el-form-item>
                </el-col>
             </el-row>
@@ -152,11 +151,11 @@ const roleOptions = ref([]);
 
 // 列显隐信息
 const columns = ref([
-   { key: 0, label: `应用名称`, visible: true },
-   { key: 1, label: `应用描述`, visible: true },
+   { key: 0, label: `渠道名称`, visible: true },
+   { key: 1, label: `渠道描述`, visible: true },
    { key: 2, label: `表数据量`, visible: true },
    { key: 3, label: `类型`, visible: true },
-   { key: 4, label: `应用地址`, visible: true },
+   { key: 4, label: `渠道地址`, visible: true },
    { key: 5, label: `状态`, visible: true },
    { key: 6, label: `更新时间`, visible: true }
 ]);
@@ -181,7 +180,7 @@ const data = reactive({
 
 const { queryParams, form, rules } = toRefs(data);
 
-/** 查询应用列表 */
+/** 查询渠道列表 */
 function getList() {
    loading.value = true;
    listChannelKey(proxy.addDateRange(queryParams.value, dateRange.value)).then(res => {
@@ -208,7 +207,7 @@ function resetQuery() {
 /** 删除按钮操作 */
 function handleDelete(row) {
    const ChannelKeyIds = row.id || ids.value;
-   proxy.$modal.confirm('是否确认删除应用编号为"' + ChannelKeyIds + '"的数据项？').then(function () {
+   proxy.$modal.confirm('是否确认删除渠道编号为"' + ChannelKeyIds + '"的数据项？').then(function () {
       return delChannelKey(ChannelKeyIds);
    }).then(() => {
       getList();
@@ -247,7 +246,7 @@ function cancel() {
 function handleAdd() {
    reset();
    open.value = true;
-   title.value = "添加应用";
+   title.value = "添加渠道";
 };
 
 /** 修改按钮操作 */
@@ -257,7 +256,7 @@ function handleUpdate(row) {
    getChannelKey(ChannelKeyId).then(response => {
       form.value = response.data;
       open.value = true;
-      title.value = "修改应用";
+      title.value = "修改渠道";
    });
 };
 
