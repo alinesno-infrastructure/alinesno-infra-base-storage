@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.lang.exception.RpcServiceRuntimeException;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -50,23 +51,23 @@ public class ParentFileStorageServiceImpl implements IParentFileStorageService {
                 .setProgressMonitor(new ProgressListener() {
                     @Override
                     public void start() {
-                        System.out.println("上传开始");
+                        log.debug("上传开始");
                     }
 
                     @Override
                     public void progress(long progressSize,long allSize) {
-                        System.out.println("已上传 " + progressSize + " 总大小" + allSize);
+                        log.debug("已上传 " + progressSize + " 总大小" + allSize);
                     }
 
                     @Override
                     public void finish() {
-                        System.out.println("上传结束");
+                        log.debug("上传结束");
                     }
                 })
                 .setPlatform(platform)    //使用指定的存储平台
                 .upload() ;
 
-        return AjaxResult.success("操作成功." , info.getId());
+        return AjaxResult.success("上传成功." , info.getId());
     }
 
     @Override
@@ -78,7 +79,7 @@ public class ParentFileStorageServiceImpl implements IParentFileStorageService {
                 .putAttr("role","admin") //保存一些属性，可以在切面、保存上传记录、自定义存储平台等地方获取使用，不需要可以不写
                 .upload();  //将文件上传到对应地方
 
-        return AjaxResult.success(fileInfo.getUrl());
+        return AjaxResult.success("上传成功." , fileInfo.getUrl());
     }
 
     @Override
@@ -86,12 +87,28 @@ public class ParentFileStorageServiceImpl implements IParentFileStorageService {
         handlePlatform(platform) ;
 
         FileInfo info = fileStorageService.of(file)
-                .setPlatform(platform)    //使用指定的存储平台
+                .setProgressMonitor(new ProgressListener() {
+                    @Override
+                    public void start() {
+                        log.debug("上传开始");
+                    }
+
+                    @Override
+                    public void progress(long progressSize,long allSize) {
+                        log.debug("已上传 " + progressSize + " 总大小" + allSize);
+                    }
+
+                    @Override
+                    public void finish() {
+                        log.debug("上传结束");
+                    }
+                })
                 .image(img -> img.size(1000,1000))  //将图片大小调整到 1000*1000
                 .thumbnail(th -> th.size(200,200))  //再生成一张 200*200 的缩略图
+                .setPlatform(platform)    //使用指定的存储平台
                 .upload();
 
-        return AjaxResult.success(info.getId());
+        return AjaxResult.success("上传成功." , info.getId());
     }
 
     @Override
@@ -122,12 +139,14 @@ public class ParentFileStorageServiceImpl implements IParentFileStorageService {
 
     @Override
     public boolean exists(String storageId) {
-        return false;
+        FileInfo fileInfo = getById(storageId) ;
+        return fileStorageService.exists(fileInfo) ;
     }
 
     @Override
     public boolean delete(String storageId) {
-        return false;
+        FileInfo fileInfo = getById(storageId) ;
+        return fileStorageService.delete(fileInfo) ;
     }
 
     @Override
@@ -138,17 +157,17 @@ public class ParentFileStorageServiceImpl implements IParentFileStorageService {
         return fileStorageService.download(fileInfo).setProgressMonitor(new ProgressListener() {
             @Override
             public void start() {
-                System.out.println("下载开始");
+                log.debug("下载开始");
             }
 
             @Override
             public void progress(long progressSize,long allSize) {
-                System.out.println("已下载 " + progressSize + " 总大小" + allSize);
+                log.debug("已下载 " + progressSize + " 总大小" + allSize);
             }
 
             @Override
             public void finish() {
-                System.out.println("下载结束");
+                log.debug("下载结束");
             }
         }).bytes() ;
 
@@ -172,6 +191,10 @@ public class ParentFileStorageServiceImpl implements IParentFileStorageService {
 
     public FileInfo getById(String id) {
         StorageFileEntity detail = fileService.getOne(new LambdaQueryWrapper<StorageFileEntity>().eq(StorageFileEntity::getId,Long.parseLong(id)));
+        if(detail == null){
+            throw new RpcServiceRuntimeException("文件不存在.");
+        }
+
         FileInfo info = BeanUtil.copyProperties(detail,FileInfo.class,"metadata","userMetadata","thMetadata","thUserMetadata","attr");
 
         try {
@@ -185,6 +208,7 @@ public class ParentFileStorageServiceImpl implements IParentFileStorageService {
             info.setAttr(fileDetailService.jsonToDict(detail.getAttr()));
         }catch (Exception e){
             log.error("转换json异常:{}" , e.getMessage());
+            throw new RpcServiceRuntimeException("JSON转换异常.");
         }
 
         return info;
