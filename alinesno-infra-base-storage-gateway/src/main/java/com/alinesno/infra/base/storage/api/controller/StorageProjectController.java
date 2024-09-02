@@ -1,23 +1,24 @@
 package com.alinesno.infra.base.storage.api.controller;
 
+import com.alinesno.infra.base.storage.api.UpdateDocumentTypeDto;
 import com.alinesno.infra.base.storage.entity.StorageProjectEntity;
 import com.alinesno.infra.base.storage.service.IStorageProjectService;
 import com.alinesno.infra.common.core.constants.SpringInstanceScope;
 import com.alinesno.infra.common.facade.pageable.DatatablesPageBean;
 import com.alinesno.infra.common.facade.pageable.TableDataInfo;
+import com.alinesno.infra.common.facade.response.AjaxResult;
 import com.alinesno.infra.common.web.adapter.login.account.CurrentAccountJwt;
 import com.alinesno.infra.common.web.adapter.rest.BaseController;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 处理与BusinessLogEntity相关的请求的Controller。
@@ -52,11 +53,18 @@ public class StorageProjectController extends BaseController<StorageProjectEntit
 
         // 初始化默认应用
         if (count == 0) {
-            service.initDefaultApp(CurrentAccountJwt.getUserId());
+            service.initDefaultApp(userId);
         }
 
         return this.toPage(model, this.getFeign(), page);
     }
+
+    // 更新项目文档类型
+    @PostMapping("/updateDocumentType")
+    public AjaxResult updateDocumentType(@RequestBody @Valid UpdateDocumentTypeDto dto) {
+        return toAjax(service.updateDocumentType(dto));
+    }
+
 
     @Override
     public IStorageProjectService getFeign() {
