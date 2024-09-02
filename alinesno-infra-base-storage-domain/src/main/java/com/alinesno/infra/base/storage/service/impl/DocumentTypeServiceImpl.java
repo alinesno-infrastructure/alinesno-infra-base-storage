@@ -37,7 +37,13 @@ public class DocumentTypeServiceImpl extends IBaseServiceImpl<DocumentTypeEntity
     }
 
     @Override
-    public void initDocumentType(long userId) {
+    public List<DocumentTypeEntity> initDocumentType(long userId) {
+
+        LambdaQueryWrapper<DocumentTypeEntity> wrapper = new LambdaQueryWrapper<DocumentTypeEntity>()
+                .eq(DocumentTypeEntity::getOperatorId, userId) ;
+        if(count(wrapper) > 0){
+            return list(wrapper) ;
+        }
 
         List<DocumentTypeEntity> documentTypes = new ArrayList<>();
 
@@ -48,6 +54,7 @@ public class DocumentTypeServiceImpl extends IBaseServiceImpl<DocumentTypeEntity
                     type.getName(),
                     type.getDesc(), true, 100, false) ;
 
+            typeE.setFileType(type.getFileTypeStr());
             typeE.setOperatorId(userId);
 
             documentTypes.add(typeE) ;
@@ -58,5 +65,7 @@ public class DocumentTypeServiceImpl extends IBaseServiceImpl<DocumentTypeEntity
                 .in(DocumentTypeEntity::getTypeName , DocumentTypeEnum.getAllNames())) ;
 
         saveBatch(documentTypes) ;
+
+        return documentTypes ;
     }
 }
