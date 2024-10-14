@@ -5,6 +5,7 @@ import com.alinesno.infra.base.storage.api.dto.InfraFileInfoDto;
 import com.alinesno.infra.base.storage.entity.StorageFileEntity;
 import com.alinesno.infra.base.storage.plugins.service.FileDetailService;
 import com.alinesno.infra.base.storage.service.IStorageFileService;
+import com.alinesno.infra.common.core.utils.DateUtils;
 import com.alinesno.infra.common.facade.response.AjaxResult;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.dromara.x.file.storage.core.FileInfo;
@@ -74,10 +75,28 @@ public class ParentFileStorageServiceImpl implements IParentFileStorageService {
     public AjaxResult uploadCallbackUrl(MultipartFile file, String platform) {
         handlePlatform(platform) ;
 
+        String date = DateUtils.getDate() + "/" ;
+
         FileInfo fileInfo = fileStorageService.of(file)
                 .setPlatform(platform)    //使用指定的存储平台
-                .putAttr("role","admin") //保存一些属性，可以在切面、保存上传记录、自定义存储平台等地方获取使用，不需要可以不写
-                .upload();  //将文件上传到对应地方
+                .setProgressMonitor(new ProgressListener() {
+                    @Override
+                    public void start() {
+                        log.debug("上传开始");
+                    }
+
+                    @Override
+                    public void progress(long progressSize,long allSize) {
+                        log.debug("已上传 " + progressSize + " 总大小" + allSize);
+                    }
+
+                    @Override
+                    public void finish() {
+                        log.debug("上传结束");
+                    }
+                })
+                .setPath(date)
+                .upload() ;
 
         return AjaxResult.success("上传成功." , fileInfo.getUrl());
     }
