@@ -50,7 +50,7 @@ sa-token:
 
 dromara:
   x-file-storage: #文件存储配置
-    default-platform: huawei-obs-1 #默认使用的存储平台
+    default-platform: qiniu-kodo #默认使用的存储平台
     thumbnail-suffix: ".min.jpg" #缩略图后缀，例如【.min.jpg】【.png】
     local-plus:
       - platform: local # 存储平台标识
