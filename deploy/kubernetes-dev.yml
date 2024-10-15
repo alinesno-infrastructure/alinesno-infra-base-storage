@@ -50,6 +50,9 @@ spec:
                 -Dalinesno.infra.qiniu.secret-key=${QINIU_SECRET_KEY}
                 -Dalinesno.infra.qiniu.bucket=${QINIU_BUCKET_NAME}
                 -Dalinesno.infra.qiniu.domain=${QINIU_BUCKET_DOMAIN}
+                
+                -Dalinesno.infra.qiniu.bucket-pub=${QINIU_BUCKET_NAME_PUB}
+                -Dalinesno.infra.qiniu.domain-pub=${QINIU_BUCKET_NAME_PUB}
           ports:
             - name: http
               containerPort: 8080
