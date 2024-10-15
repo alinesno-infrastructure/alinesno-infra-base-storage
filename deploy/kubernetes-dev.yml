@@ -52,7 +52,7 @@ spec:
                 -Dalinesno.infra.qiniu.domain=${QINIU_BUCKET_DOMAIN}
                 
                 -Dalinesno.infra.qiniu.bucket-pub=${QINIU_BUCKET_NAME_PUB}
-                -Dalinesno.infra.qiniu.domain-pub=${DEV_QINIU_BUCKET_DOMAIN_PUB}
+                -Dalinesno.infra.qiniu.domain-pub=${QINIU_BUCKET_DOMAIN_PUB}
           ports:
             - name: http
               containerPort: 8080
