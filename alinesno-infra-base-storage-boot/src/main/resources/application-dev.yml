@@ -77,6 +77,13 @@ dromara:
         bucket-name: ${alinesno.infra.qiniu.bucket}
         domain:  ${alinesno.infra.qiniu.domain} # 访问域名，注意“/”结尾，例如：http://abc.hn-bkt.clouddn.com/
         base-path: base/ # 基础路径
+      - platform: qiniu-kodo-pub # 存储平台标识
+        enable-storage: true  # 启用存储
+        access-key: ${alinesno.infra.qiniu.access-key}
+        secret-key: ${alinesno.infra.qiniu.secret-key}
+        bucket-name: ${alinesno.infra.qiniu.bucket-pub}
+        domain:  ${alinesno.infra.qiniu.domain-pub} # 访问域名，注意“/”结尾，例如：http://abc.hn-bkt.clouddn.com/
+        base-path: public/ # 基础路径
     aliyun-oss:
       - platform: aliyun-oss-1 # 存储平台标识
         enable-storage: true  # 启用存储
