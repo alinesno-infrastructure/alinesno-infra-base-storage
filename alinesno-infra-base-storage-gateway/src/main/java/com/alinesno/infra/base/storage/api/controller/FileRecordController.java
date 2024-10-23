@@ -4,6 +4,8 @@ import com.alinesno.infra.base.storage.entity.FileRecordEntity;
 import com.alinesno.infra.base.storage.service.IChannelKeyService;
 import com.alinesno.infra.base.storage.service.IFileRecordService;
 import com.alinesno.infra.common.core.constants.SpringInstanceScope;
+import com.alinesno.infra.common.extend.datasource.annotation.DataPermissionQuery;
+import com.alinesno.infra.common.extend.datasource.annotation.DataPermissionScope;
 import com.alinesno.infra.common.facade.enums.HasDeleteEnums;
 import com.alinesno.infra.common.facade.pageable.DatatablesPageBean;
 import com.alinesno.infra.common.facade.pageable.TableDataInfo;
@@ -37,6 +39,7 @@ public class FileRecordController extends BaseController<FileRecordEntity, IFile
      * @param page DatatablesPageBean对象。
      * @return 包含DataTables数据的TableDataInfo对象。
      */
+    @DataPermissionScope
     @ResponseBody
     @PostMapping("/datatables")
     public TableDataInfo datatables(HttpServletRequest request, Model model, DatatablesPageBean page) {
