@@ -40,6 +40,7 @@ alinesno:
     # 排除路径
     excludes:
       - /sso/**
+      - /api/base/storage/**
   infra:
     gateway:
       host: http://alinesno-infra-base-gateway-proxy-application.beta.base.infra.linesno.com
