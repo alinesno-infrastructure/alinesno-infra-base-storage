@@ -6,6 +6,9 @@ import com.alinesno.infra.base.storage.enums.FileTypeEnum;
 import com.alinesno.infra.base.storage.service.ICatalogService;
 import com.alinesno.infra.base.storage.service.IStorageFileService;
 import com.alinesno.infra.common.core.constants.SpringInstanceScope;
+import com.alinesno.infra.common.extend.datasource.annotation.DataPermissionQuery;
+import com.alinesno.infra.common.extend.datasource.annotation.DataPermissionScope;
+import com.alinesno.infra.common.facade.datascope.PermissionQuery;
 import com.alinesno.infra.common.facade.pageable.DatatablesPageBean;
 import com.alinesno.infra.common.facade.pageable.TableDataInfo;
 import com.alinesno.infra.common.facade.response.AjaxResult;
@@ -49,6 +52,7 @@ public class StorageFileController extends BaseController<StorageFileEntity, ISt
      * @param page DatatablesPageBean对象。
      * @return 包含DataTables数据的TableDataInfo对象。
      */
+    @DataPermissionScope
     @ResponseBody
     @PostMapping("/datatables")
     public TableDataInfo datatables(HttpServletRequest request, Model model, DatatablesPageBean page) {
@@ -73,9 +77,10 @@ public class StorageFileController extends BaseController<StorageFileEntity, ISt
         return tableDataInfo;
     }
 
+    @DataPermissionQuery
     @GetMapping("/catalogTreeSelect")
-    public AjaxResult catalogTreeSelect(){
-        return AjaxResult.success("success" , catalogService.selectCatalogTreeList()) ;
+    public AjaxResult catalogTreeSelect(PermissionQuery query){
+        return AjaxResult.success("success" , catalogService.selectCatalogTreeList(query)) ;
     }
 
     @Override
