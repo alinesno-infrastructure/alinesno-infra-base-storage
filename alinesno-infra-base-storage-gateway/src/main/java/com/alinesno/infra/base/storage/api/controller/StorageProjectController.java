@@ -4,6 +4,7 @@ import com.alinesno.infra.base.storage.api.UpdateDocumentTypeDto;
 import com.alinesno.infra.base.storage.entity.StorageProjectEntity;
 import com.alinesno.infra.base.storage.service.IStorageProjectService;
 import com.alinesno.infra.common.core.constants.SpringInstanceScope;
+import com.alinesno.infra.common.extend.datasource.annotation.DataPermissionScope;
 import com.alinesno.infra.common.facade.pageable.DatatablesPageBean;
 import com.alinesno.infra.common.facade.pageable.TableDataInfo;
 import com.alinesno.infra.common.facade.response.AjaxResult;
@@ -43,18 +44,19 @@ public class StorageProjectController extends BaseController<StorageProjectEntit
      * @param page DatatablesPageBean对象。
      * @return 包含DataTables数据的TableDataInfo对象。
      */
+    @DataPermissionScope
     @ResponseBody
     @PostMapping("/datatables")
     public TableDataInfo datatables(HttpServletRequest request, Model model, DatatablesPageBean page) {
         log.debug("page = {}", ToStringBuilder.reflectionToString(page));
 
-        long userId = CurrentAccountJwt.getUserId();
-        long count = service.count(new LambdaQueryWrapper<StorageProjectEntity>().eq(StorageProjectEntity::getOperatorId , userId));
-
-        // 初始化默认应用
-        if (count == 0) {
-            service.initDefaultApp(userId);
-        }
+//        long userId = CurrentAccountJwt.getUserId();
+//        long count = service.count(new LambdaQueryWrapper<StorageProjectEntity>().eq(StorageProjectEntity::getOperatorId , userId));
+//
+//        // 初始化默认应用
+//        if (count == 0) {
+//            service.initDefaultApp(userId);
+//        }
 
         return this.toPage(model, this.getFeign(), page);
     }
