@@ -5,6 +5,7 @@ server:
 spring:
   application:
     name: alinesno-infra-base-storage-boot
+    id: 1848341995578118144
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/dev_alinesno_infra_base_storage_v100?serverTimezone=GMT%2B8&zeroDateTimeBehavior=CONVERT_TO_NULL
@@ -25,9 +26,7 @@ actable:
   table:
     auto: update
   model:
-    pack: > 
-      com.alinesno.infra.base.storage.entity;
-      com.alinesno.infra.base.storage.plugins.entity
+    pack: com.alinesno.infra.base.storage.entity;com.alinesno.infra.base.storage.plugins.entity
   database:
     type: mysql
   index:
@@ -35,9 +34,19 @@ actable:
   unique:
     prefix: alinesno_base_storage_uni_
 
+# wechat token
+alinesno:
+  security:
+    # 排除路径
+    excludes:
+      - /sso/**
+  infra:
+    gateway:
+      host: http://alinesno-infra-base-gateway-proxy-application.beta.base.infra.linesno.com
+
 # sa-token配置
 sa-token:
-  token-name: satoken
+  token-name: Authorization
   host-path: http://alinesno-infra-base-identity-auth-application.beta.base.infra.linesno.com
   sso:
     auth-url: ${sa-token.host-path}/login
