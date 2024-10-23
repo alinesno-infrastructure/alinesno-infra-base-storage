@@ -6,6 +6,8 @@ import com.alinesno.infra.base.storage.mapper.CatalogMapper;
 import com.alinesno.infra.base.storage.service.ICatalogService;
 import com.alinesno.infra.common.core.service.impl.IBaseServiceImpl;
 import com.alinesno.infra.common.core.utils.StringUtils;
+import com.alinesno.infra.common.facade.datascope.PermissionQuery;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -24,9 +26,13 @@ import java.util.stream.Collectors;
 public class CatalogServiceImpl extends IBaseServiceImpl<CatalogEntity, CatalogMapper> implements ICatalogService {
 
     @Override
-    public List<CatalogEntity> selectCatalogList(CatalogEntity promptCatalog) {
+    public List<CatalogEntity> selectCatalogList(CatalogEntity promptCatalog, PermissionQuery query) {
 
-        List<CatalogEntity> list = list() ;
+        LambdaQueryWrapper<CatalogEntity> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.setEntityClass(CatalogEntity.class) ;
+        query.toWrapper(queryWrapper);
+
+        List<CatalogEntity> list = list(queryWrapper) ;
 
         if(list == null || list.isEmpty()){
 
@@ -56,9 +62,13 @@ public class CatalogServiceImpl extends IBaseServiceImpl<CatalogEntity, CatalogM
     }
 
     @Override
-    public List<TreeSelectDto> selectCatalogTreeList() {
+    public List<TreeSelectDto> selectCatalogTreeList(PermissionQuery query) {
 
-        List<CatalogEntity> deptTrees = buildDeptTree(list());
+        LambdaQueryWrapper<CatalogEntity> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.setEntityClass(CatalogEntity.class) ;
+        query.toWrapper(queryWrapper);
+
+        List<CatalogEntity> deptTrees = buildDeptTree(list(queryWrapper));
         return deptTrees.stream().map(TreeSelectDto::new).collect(Collectors.toList());
     }
 
