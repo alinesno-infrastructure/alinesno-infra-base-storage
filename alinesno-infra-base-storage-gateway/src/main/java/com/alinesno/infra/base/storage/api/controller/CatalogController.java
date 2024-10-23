@@ -4,6 +4,10 @@ import com.alinesno.infra.base.storage.entity.CatalogEntity;
 import com.alinesno.infra.base.storage.service.ICatalogService;
 import com.alinesno.infra.common.core.constants.SpringInstanceScope;
 import com.alinesno.infra.common.core.utils.StringUtils;
+import com.alinesno.infra.common.extend.datasource.annotation.DataPermissionQuery;
+import com.alinesno.infra.common.extend.datasource.annotation.DataPermissionSave;
+import com.alinesno.infra.common.extend.datasource.annotation.DataPermissionScope;
+import com.alinesno.infra.common.facade.datascope.PermissionQuery;
 import com.alinesno.infra.common.facade.pageable.DatatablesPageBean;
 import com.alinesno.infra.common.facade.pageable.TableDataInfo;
 import com.alinesno.infra.common.facade.response.AjaxResult;
@@ -45,6 +49,7 @@ public class CatalogController extends BaseController<CatalogEntity, ICatalogSer
      * @param page DatatablesPageBean对象。
      * @return 包含DataTables数据的TableDataInfo对象。
      */
+    @DataPermissionScope
     @ResponseBody
     @PostMapping("/datatables")
     public TableDataInfo datatables(HttpServletRequest request, Model model, DatatablesPageBean page) {
@@ -52,9 +57,10 @@ public class CatalogController extends BaseController<CatalogEntity, ICatalogSer
         return this.toPage(model, this.getFeign(), page);
     }
 
+    @DataPermissionQuery
     @GetMapping("/list")
-    public AjaxResult list(CatalogEntity promptCatalog) {
-        List<CatalogEntity> promptCatalogEntities = service.selectCatalogList(promptCatalog);
+    public AjaxResult list(CatalogEntity promptCatalog , PermissionQuery query) {
+        List<CatalogEntity> promptCatalogEntities = service.selectCatalogList(promptCatalog , query);
 
         return AjaxResult.success("操作成功." , promptCatalogEntities) ;
     }
@@ -63,6 +69,7 @@ public class CatalogController extends BaseController<CatalogEntity, ICatalogSer
      * 保存角色类型
      * @return
      */
+    @DataPermissionSave
     @PostMapping("/insertCatalog")
     public AjaxResult insertCatalog(@RequestBody CatalogEntity entity){
 
@@ -81,10 +88,11 @@ public class CatalogController extends BaseController<CatalogEntity, ICatalogSer
      * @param deptId
      * @return
      */
+    @DataPermissionQuery
     @GetMapping("/excludeChild/{id}")
-    public AjaxResult excludeChild(@PathVariable(value = "id", required = false) Long deptId)
+    public AjaxResult excludeChild(@PathVariable(value = "id", required = false) Long deptId , PermissionQuery query)
     {
-        List<CatalogEntity> depts = service.selectCatalogList(new CatalogEntity());
+        List<CatalogEntity> depts = service.selectCatalogList(new CatalogEntity(), query);
         depts.removeIf(d -> d.getId().longValue() == deptId || ArrayUtils.contains(StringUtils.split(d.getAncestors(), ","), deptId + ""));
         return AjaxResult.success("操作成功." , depts);
     }
