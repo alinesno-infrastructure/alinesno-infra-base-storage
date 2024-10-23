@@ -3,6 +3,7 @@ package com.alinesno.infra.base.storage.api.controller;
 import com.alinesno.infra.base.storage.entity.DocumentTypeEntity;
 import com.alinesno.infra.base.storage.service.IDocumentTypeService;
 import com.alinesno.infra.common.core.constants.SpringInstanceScope;
+import com.alinesno.infra.common.extend.datasource.annotation.DataPermissionScope;
 import com.alinesno.infra.common.facade.pageable.DatatablesPageBean;
 import com.alinesno.infra.common.facade.pageable.TableDataInfo;
 import com.alinesno.infra.common.web.adapter.login.account.CurrentAccountJwt;
@@ -45,6 +46,7 @@ public class DocumentTypeController extends BaseController<DocumentTypeEntity, I
      * @param page    DatatablesPageBean对象。
      * @return 包含DataTables数据的TableDataInfo对象。
      */
+    @DataPermissionScope
     @ResponseBody
     @PostMapping("/datatables")
     public TableDataInfo datatables(HttpServletRequest request, Model model, DatatablesPageBean page) {
