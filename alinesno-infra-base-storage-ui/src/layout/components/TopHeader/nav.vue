@@ -10,11 +10,11 @@
         <i class="fa-regular fa-file-word"></i> 手册
       </router-link>
     </div>
-    <div class="acp-header-item ">
+    <!-- <div class="acp-header-item ">
       <router-link class="header-label-text" to="/dashboard/smartService">
-        <i class="fa-solid fa-swatchbook"></i> 专家 
+        <i class="fa-solid fa-swatchbook"></i> 专家
       </router-link>
-    </div>
+    </div> -->
     <div class="acp-header-item ">
       <router-link class="header-label-text" to="/dashboard/suportTechnique">
         <i class="fa-solid fa-user-tag"></i> 服务
@@ -32,7 +32,8 @@
           </el-icon>
         </a>
         <a class="header-label-text" target="_blank">
-          <img src="http://data.linesno.com/switch_header.png" class="su70ez-0 CB-gLgKdv" alt="" />
+          <!-- <img src="http://data.linesno.com/switch_header.png" class="su70ez-0 CB-gLgKdv" alt="" /> -->
+          <img :src="userStore.avatar" class="su70ez-0 CB-gLgKdv" alt="" />
         </a>
       </div>
 
@@ -43,7 +44,7 @@
             <el-header class="bg-color-base info-h" style="">
               <p class="color-text-secondary f-e-s">登陆名: {{ userStore.name }}
                 <span class="copy-user-id">
-                  <i class="fa-solid fa-clone"></i> 
+                  <i class="fa-solid fa-clone"></i>
                 </span>
               </p>
               <p class="color-text-primary f-e-s" v-if="userStore.org">组织: {{ userStore.org.orgName }} </p>
@@ -100,7 +101,7 @@ import useUserStore from '@/store/modules/user'
 const userStore = useUserStore()
 const router = useRouter();
 
-// const avatar = ref('http://data.linesno.com/switch_header.png') ; 
+// const avatar = ref('http://data.linesno.com/switch_header.png') ;
 // const nickname = ref('超级管理员') ;
 // const name = ref('超级管理员') ;
 
@@ -120,7 +121,7 @@ function logout() {
 
 /** 判断用户是否已经存在组织 */
 function handleInOrg(){
-  let org = userStore.org ;   
+  let org = userStore.org ;
   if(!org){ // 如果不存在则跳转到组织配置界面
     router.push('/createOrg')
   }
