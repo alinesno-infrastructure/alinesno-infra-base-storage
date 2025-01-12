@@ -40,6 +40,7 @@ alinesno:
     # 排除路径
     excludes:
       - /sso/**
+      - /logout
       - /api/base/storage/**
   infra:
     gateway:
