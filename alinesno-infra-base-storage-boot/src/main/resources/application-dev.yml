@@ -76,10 +76,10 @@ dromara:
         enable-storage: true  # 启用存储
         access-key: ${alinesno.infra.minio.access-key}
         secret-key: ${alinesno.infra.minio.secret-key}
-        end-point: ${alinesno.infra.minio.bucket}
+        end-point: ${alinesno.infra.minio.endpoint}
         bucket-name: ${alinesno.infra.minio.bucket}
         domain: ${alinesno.infra.minio.domain} # 访问域名，注意“/”结尾，例如：http://minio.abc.com/abc/
-        base-path: test/ # 基础路径
+        base-path: base/ # 基础路径
     qiniu-kodo:
       - platform: qiniu-kodo # 存储平台标识
         enable-storage: true  # 启用存储
