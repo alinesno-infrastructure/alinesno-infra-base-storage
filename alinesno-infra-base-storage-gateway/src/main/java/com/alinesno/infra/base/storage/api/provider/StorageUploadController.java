@@ -4,7 +4,10 @@ import com.alinesno.infra.base.storage.api.aspect.Intercepted;
 import com.alinesno.infra.base.storage.plugins.IParentFileStorageService;
 import com.alinesno.infra.common.facade.response.AjaxResult;
 import io.jsonwebtoken.lang.Assert;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,10 +18,14 @@ import org.springframework.web.multipart.MultipartFile;
  * @author luoxiaodong
  * @version 1.0.0
  */
+@Slf4j
 @Scope
 @RestController
 @RequestMapping("/api/base/storage")
 public class StorageUploadController {
+
+    @Value("${alinesno.storage.force:}")
+    private String forceStore ;
 
     @Autowired
     private IParentFileStorageService fileStorageService; // 注入实例
@@ -60,6 +67,13 @@ public class StorageUploadController {
 
         Assert.isTrue(!file.isEmpty(), "上传文件为空");
 
+
+        if(StringUtils.isNoneBlank(forceStore)){
+            platform = forceStore ;
+        }
+
+        log.info("上传文件到存储平台：{}", platform);
+
         return fileStorageService.upload(file , platform);
     }
 
@@ -72,6 +86,14 @@ public class StorageUploadController {
     @Intercepted
     @PostMapping("/uploadCallbackUrl")
     public AjaxResult uploadCallbackUrl(MultipartFile file , String platform) {
+
+
+        if(StringUtils.isNoneBlank(forceStore)){
+            platform = forceStore ;
+        }
+
+        log.info("上传文件到存储平台：{}", platform);
+
         return fileStorageService.uploadCallbackUrl(file , platform);
     }
 
